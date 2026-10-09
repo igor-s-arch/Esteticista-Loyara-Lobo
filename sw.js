@@ -1,5 +1,5 @@
-const CACHE='loyara-lobo-v8';
-const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon.svg'];
+const CACHE='loyara-lobo-v9';
+const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon.svg','./header-loyara.webp'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
