@@ -83,8 +83,9 @@ function renderHero(){
  var t=today();
  var day=appointments.filter(function(a){return a.date===t&&a.status!=='Concluído'&&a.status!=='Cancelado'}).sort(function(a,b){return String(a.time).localeCompare(String(b.time))});
  var pending=packages.reduce(function(s,p){return s+Math.max(0,Number(p.total||0)-receivedTotal(p))},0);
- el('heroToday').textContent=day.length+' atendimento'+(day.length===1?'':'s');
- el('heroNext').textContent=day[0]?day[0].time+' · '+day[0].clientName:'Livre';
+ el('heroToday').textContent=String(day.length);
+ el('heroNext').textContent=day[0]?day[0].clientName:'Livre';
+ if(el('heroNextProc'))el('heroNextProc').textContent=day[0]?day[0].time+' · '+(day[0].procedureName||day[0].procedure||'Atendimento'):'Nenhum horário próximo';
  el('heroPending').textContent=money(pending);
 }
 
@@ -119,8 +120,9 @@ function renderClients(){
  var data=clients.filter(function(c){return(c.name+' '+c.phone).toLowerCase().indexOf(term)>=0});
  var favorites=clients.filter(function(c){return c.favorite});
  el('favoriteClients').innerHTML=favorites.length?favorites.map(function(c){
-  return'<div class="item"><div class="itemTop"><div><strong>'+esc(c.name)+'</strong><div class="meta">'+esc(c.phone||'Sem telefone')+'</div></div><button class="favorite on" data-fav="'+c.id+'">♥</button></div><div class="actions"><button class="btn secondary sm" data-msg="'+c.id+'">Enviar mensagem</button><button class="btn gold sm" data-rem="'+c.id+'">Lembrete</button></div></div>';
- }).join(''):'<div class="empty">Marque suas clientes favoritas com ♡.</div>';
+  var initials=c.name.split(/\s+/).slice(0,2).map(function(p){return p.charAt(0).toUpperCase()}).join('');
+  return'<div class="favPerson"><button class="favAvatar" data-msg="'+c.id+'" title="Enviar mensagem">'+esc(initials||'♡')+'</button><span>'+esc(c.name)+'</span></div>';
+ }).join('')+'<div class="favPerson"><button class="favAvatar" data-open-inline="clientModal">＋</button><span>Adicionar</span></div>':'<div class="favPerson"><button class="favAvatar" data-open-inline="clientModal">＋</button><span>Adicionar favorita</span></div>';
  el('clientList').innerHTML=data.length?data.map(function(c){
   var ps=packages.filter(function(p){return p.clientId===c.id});
   return'<div class="item"><div class="itemTop"><div><strong>'+esc(c.name)+'</strong><div class="meta">'+esc(c.phone||'Sem telefone')+' · '+ps.length+' pacote(s)</div></div><button class="favorite '+(c.favorite?'on':'')+'" data-fav="'+c.id+'">'+(c.favorite?'♥':'♡')+'</button></div>'+(c.notes?'<div class="meta">'+esc(c.notes)+'</div>':'')+'<div class="actions"><button class="btn secondary sm" data-msg="'+c.id+'">WhatsApp</button><button class="btn gold sm" data-rem="'+c.id+'">Lembrete</button></div></div>';
@@ -265,15 +267,30 @@ function copyBookingLink(){
 function bind(){
  qsa('.navBtn').forEach(function(b){b.onclick=function(){navigate(b.getAttribute('data-screen'))}});
  qsa('[data-open]').forEach(function(b){b.onclick=function(){openModal(b.getAttribute('data-open'));if(b.getAttribute('data-open')==='procedureModal')renderProcedures();if(b.getAttribute('data-open')==='appointmentModal'){fillSelectors();el('apptDate').value=today()}}});
+ qsa('[data-open-inline]').forEach(function(b){b.onclick=function(){openModal(b.getAttribute('data-open-inline'))}});
  qsa('[data-close]').forEach(function(b){b.onclick=function(){closeModal(b.getAttribute('data-close'))}});
+ if(el('goPackageHome'))el('goPackageHome').onclick=function(){navigate('packages')};
+ if(el('goAgendaHome'))el('goAgendaHome').onclick=function(){navigate('agenda')};
+ if(el('goBookingHome'))el('goBookingHome').onclick=function(){navigate('agenda');showAgendaPanel('link')};
+ if(el('showAllClients'))el('showAllClients').onclick=function(){el('allClientsCard').scrollIntoView({behavior:'smooth',block:'start'})};
+ if(el('agendaTabMine'))el('agendaTabMine').onclick=function(){showAgendaPanel('mine')};
+ if(el('agendaTabLink'))el('agendaTabLink').onclick=function(){showAgendaPanel('link')};
  el('saveClient').onclick=saveClient;el('clientSearch').oninput=renderClients;el('quickAddProcedure').onclick=quickAddProcedure;el('addBuilder').onclick=addBuilder;el('packageDiscount').oninput=renderPackageSummary;el('packageInstallments').onchange=renderPackageSummary;el('savePackage').onclick=savePackage;el('copyProposal').onclick=copyProposal;el('sendProposal').onclick=sendProposal;el('saveAppointment').onclick=saveAppointment;el('savePayment').onclick=savePayment;el('copyBookingLink').onclick=copyBookingLink;
+}
+
+function showAgendaPanel(which){
+ var mine=which!=='link';
+ if(el('agendaMine'))el('agendaMine').classList.toggle('active',mine);
+ if(el('agendaLinkPanel'))el('agendaLinkPanel').classList.toggle('active',!mine);
+ if(el('agendaTabMine'))el('agendaTabMine').classList.toggle('active',mine);
+ if(el('agendaTabLink'))el('agendaTabLink').classList.toggle('active',!mine);
 }
 
 function refreshAll(){fillSelectors();renderHero();renderClients();renderProcedures();renderBuilder();renderPackages();renderAgenda();renderFinance()}
 
 var deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;el('installBtn').style.display='block'});
-el('installBtn').addEventListener('click',function(){if(!deferredPrompt){toast('Use o menu do navegador e escolha Adicionar à tela inicial.');return}deferredPrompt.prompt();deferredPrompt.userChoice.finally(function(){deferredPrompt=null;el('installBtn').style.display='none'})});
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;if(el('installBtn'))el('installBtn').style.display='block'});
+if(el('installBtn'))el('installBtn').addEventListener('click',function(){if(!deferredPrompt){toast('Use o menu do navegador e escolha Adicionar à tela inicial.');return}deferredPrompt.prompt();deferredPrompt.userChoice.finally(function(){deferredPrompt=null;if(el('installBtn'))el('installBtn').style.display='none'})});
 
 bind();refreshAll();
 })();
