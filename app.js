@@ -6,7 +6,8 @@ var KEYS={
  procedures:'loyara_procedures_v1',
  packages:'loyara_packages_v1',
  appointments:'loyara_appointments_v1',
- settings:'loyara_settings_v1'
+ settings:'loyara_settings_v1',
+ profilePhoto:'loyara_profile_photo_v1'
 };
 var DEFAULT_PROCEDURES=[
  'Limpeza de pele','Drenagem linfática','Massagem modeladora','Massagem relaxante',
@@ -76,6 +77,33 @@ function receivedTotal(p){
  return Number(p.received||0);
 }
 function validProcedure(p){return p&&Number(p.price)>0}
+
+function loadProfilePhoto(){
+ var saved=localStorage.getItem(KEYS.profilePhoto);
+ if(saved&&el('profilePhoto'))el('profilePhoto').src=saved;
+}
+function saveProfilePhotoFile(file){
+ if(!file||!/^image\//.test(file.type||'')){toast('Escolha uma imagem.');return}
+ var reader=new FileReader();
+ reader.onload=function(){
+  var img=new Image();
+  img.onload=function(){
+   var size=512,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+   canvas.width=size;canvas.height=size;
+   var scale=Math.max(size/img.width,size/img.height);
+   var w=img.width*scale,h=img.height*scale,x=(size-w)/2,y=(size-h)/2;
+   ctx.drawImage(img,x,y,w,h);
+   var data=canvas.toDataURL('image/jpeg',0.86);
+   try{
+    localStorage.setItem(KEYS.profilePhoto,data);
+    if(el('profilePhoto'))el('profilePhoto').src=data;
+    toast('Foto de perfil atualizada.');
+   }catch(e){toast('A foto ficou muito pesada. Escolha outra imagem.')}
+  };
+  img.src=reader.result;
+ };
+ reader.readAsDataURL(file);
+}
 
 function navigate(name){
  qsa('.screen').forEach(function(s){s.classList.toggle('active',s.id==='screen-'+name)});
@@ -372,6 +400,8 @@ function bind(){
  if(el('agendaDay'))el('agendaDay').onchange=renderAgendaSlots;
  if(el('openScheduleSettings'))el('openScheduleSettings').onclick=function(){renderScheduleModal();openModal('scheduleModal')};
  if(el('saveSchedule'))el('saveSchedule').onclick=saveSchedule;
+ if(el('profilePhotoInput'))el('profilePhotoInput').onchange=function(){if(this.files&&this.files[0])saveProfilePhotoFile(this.files[0]);this.value=''};
+ if(el('profilePhotoInputSecondary'))el('profilePhotoInputSecondary').onchange=function(){if(this.files&&this.files[0])saveProfilePhotoFile(this.files[0]);this.value=''};
  if(el('apptClient'))el('apptClient').onchange=function(){fillAppointmentClient(el('apptClient').value)};
  el('saveClient').onclick=saveClient;el('clientSearch').oninput=renderClients;el('quickAddProcedure').onclick=quickAddProcedure;el('addBuilder').onclick=addBuilder;el('packageExtraDiscount').oninput=renderPackageSummary;el('savePackage').onclick=savePackage;el('copyProposal').onclick=copyProposal;el('sendProposal').onclick=sendProposal;el('saveAppointment').onclick=saveAppointment;el('savePayment').onclick=savePayment;el('copyBookingLink').onclick=copyBookingLink;
 }
@@ -390,7 +420,7 @@ var deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;if(el('installBtn'))el('installBtn').style.display='block'});
 if(el('installBtn'))el('installBtn').addEventListener('click',function(){if(!deferredPrompt){toast('Use o menu do navegador e escolha Adicionar à tela inicial.');return}deferredPrompt.prompt();deferredPrompt.userChoice.finally(function(){deferredPrompt=null;if(el('installBtn'))el('installBtn').style.display='none'})});
 
-bind();refreshAll();
+bind();loadProfilePhoto();refreshAll();
 if(el('agendaDay'))el('agendaDay').value=today();
 if(location.search.indexOf('agendar=1')>=0){navigate('agenda');showAgendaPanel('link')}
 })();
