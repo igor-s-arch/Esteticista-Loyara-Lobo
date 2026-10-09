@@ -1,4 +1,5 @@
 {
+  "id": "./?app=loyara",
   "name": "Esteticista Loyara Lobo",
   "short_name": "Loyara Lobo",
   "description": "Clientes, pacotes, agenda, lembretes e financeiro da Esteticista Loyara Lobo.",
@@ -6,14 +7,20 @@
   "scope": "./",
   "display": "standalone",
   "background_color": "#fffaf7",
-  "theme_color": "#9b5964",
+  "theme_color": "#f3d4d1",
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "./%C3%8Dcone%20Luxuoso%20Loyara%20Lobo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./%C3%8Dcone%20Luxuoso%20Loyara%20Lobo.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
