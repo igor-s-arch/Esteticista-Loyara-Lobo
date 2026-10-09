@@ -86,7 +86,7 @@ function renderHero(){
  el('heroToday').textContent=String(day.length);
  el('heroNext').textContent=day[0]?day[0].clientName:'Livre';
  if(el('heroNextProc'))el('heroNextProc').textContent=day[0]?day[0].time+' · '+(day[0].procedureName||day[0].procedure||'Atendimento'):'Nenhum horário próximo';
- el('heroPending').textContent=money(pending);
+ if(el('heroPending'))el('heroPending').textContent=money(pending);
 }
 
 function saveClient(){
@@ -130,6 +130,7 @@ function renderClients(){
  qsa('[data-fav]').forEach(function(b){b.onclick=function(){toggleFavorite(b.getAttribute('data-fav'))}});
  qsa('[data-msg]').forEach(function(b){b.onclick=function(){messageClient(b.getAttribute('data-msg'))}});
  qsa('[data-rem]').forEach(function(b){b.onclick=function(){reminderClient(b.getAttribute('data-rem'))}});
+ qsa('[data-open-inline]').forEach(function(b){b.onclick=function(){openModal(b.getAttribute('data-open-inline'))}});
 }
 
 function quickAddProcedure(){
