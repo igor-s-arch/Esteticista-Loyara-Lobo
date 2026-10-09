@@ -57,9 +57,7 @@ if(!localStorage.getItem(KEYS.procedures)){
 clients=clients.map(function(c){return Object.assign({favorite:false,notes:'',phone:''},c)});
 procedures=procedures.map(function(p){
  var price=Number(p.price||0);
- var legacyFloor=Number(p.cost||0)+Number(p.minProfit||0);
- var minPrice=p.minPrice!=null?Number(p.minPrice||0):(legacyFloor>0?legacyFloor:price);
- return {id:p.id||uid(),name:p.name||'Procedimento',price:price,minPrice:minPrice,duration:Number(p.duration||60),notes:p.notes||''};
+ return {id:p.id||uid(),name:p.name||'Procedimento',price:price,minPrice:Number((price*0.80).toFixed(2)),duration:60,notes:''};
 });
 packages=packages.map(function(p){
  var items=(p.items||[]).map(function(i){
@@ -77,7 +75,7 @@ function receivedTotal(p){
  if(Array.isArray(p.payments)&&p.payments.length)return p.payments.reduce(function(s,x){return s+Number(x.amount||0)},0);
  return Number(p.received||0);
 }
-function validProcedure(p){return p&&Number(p.price)>0&&Number(p.minPrice)>0&&Number(p.minPrice)<=Number(p.price)}
+function validProcedure(p){return p&&Number(p.price)>0}
 
 function navigate(name){
  qsa('.screen').forEach(function(s){s.classList.toggle('active',s.id==='screen-'+name)});
@@ -86,14 +84,15 @@ function navigate(name){
 }
 
 function fillSelectors(){
- var clientOptions='<option value="">Selecione...</option>'+clients.map(function(c){return'<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('');
+ var packageCurrent=el('packageClient')?el('packageClient').value:'';
+ var apptCurrent=el('apptClient')?el('apptClient').value:'';
+ var clientOptions='<option value="">Digite na hora / selecione...</option>'+clients.map(function(c){return'<option value="'+c.id+'">'+esc(c.name)+'</option>'}).join('');
  ['packageClient','apptClient'].forEach(function(id){var x=el(id);if(x)x.innerHTML=clientOptions});
+ if(el('packageClient')&&clients.some(function(c){return c.id===packageCurrent}))el('packageClient').value=packageCurrent;
+ if(el('apptClient')&&clients.some(function(c){return c.id===apptCurrent}))el('apptClient').value=apptCurrent;
  var usable=procedures.filter(validProcedure);
  var procOptions='<option value="">Selecione...</option>'+usable.map(function(p){return'<option value="'+p.id+'">'+esc(p.name)+' — '+money(p.price)+'</option>'}).join('');
  ['builderProcedure','apptProcedure'].forEach(function(id){var x=el(id);if(x)x.innerHTML=procOptions});
- if(!el('packageInstallments').options.length){
-  var html='';for(var i=1;i<=12;i++)html+='<option value="'+i+'">'+i+'x</option>';el('packageInstallments').innerHTML=html;
- }
 }
 
 function renderHero(){
@@ -167,13 +166,12 @@ function openClientDetail(id){
 }
 
 function quickAddProcedure(){
- var name=el('quickProcName').value.trim(),price=Number(el('quickProcPrice').value||0),min=Number(el('quickProcMin').value||0),duration=Math.max(15,Number(el('quickProcDuration').value||60));
+ var name=el('quickProcName').value.trim(),price=Number(el('quickProcPrice').value||0);
  if(!name){toast('Digite o nome do procedimento.');return}
- if(price<=0){toast('Digite o preço avulso.');return}
- if(min<=0||min>price){toast('O menor valor seguro deve ser maior que zero e não pode passar do preço avulso.');return}
- procedures.unshift({id:uid(),name:name,price:price,minPrice:min,duration:duration,notes:el('quickProcNotes').value.trim()});
+ if(price<=0){toast('Digite o valor do procedimento.');return}
+ procedures.unshift({id:uid(),name:name,price:price,minPrice:Number((price*0.80).toFixed(2)),duration:60,notes:''});
  write(KEYS.procedures,procedures);
- ['quickProcName','quickProcPrice','quickProcMin','quickProcNotes'].forEach(function(id){el(id).value=''});el('quickProcDuration').value='60';
+ el('quickProcName').value='';el('quickProcPrice').value='';
  refreshAll();toast('Procedimento adicionado.');
 }
 function renderProcedures(){
@@ -181,16 +179,17 @@ function renderProcedures(){
  if(!procedures.length){box.innerHTML='<div class="empty">Nenhum procedimento cadastrado.</div>';return}
  box.innerHTML=procedures.map(function(p){
   var ready=validProcedure(p);
-  return'<div class="item"><div class="itemTop"><div><strong>'+esc(p.name)+'</strong><div class="meta">Avulso '+(p.price?money(p.price):'não definido')+' · mínimo seguro '+(p.minPrice?money(p.minPrice):'não definido')+' · '+p.duration+' min</div></div><span class="badge '+(ready?'ok':'warn')+'">'+(ready?'Pronto':'Configurar')+'</span></div><div class="grid3" style="margin-top:8px"><input class="input" data-p-price="'+p.id+'" type="number" step="0.01" value="'+(p.price||'')+'" placeholder="Avulso"><input class="input" data-p-min="'+p.id+'" type="number" step="0.01" value="'+(p.minPrice||'')+'" placeholder="Mínimo"><input class="input" data-p-duration="'+p.id+'" type="number" value="'+p.duration+'" placeholder="Min"></div><div class="actions" style="margin-top:8px"><button class="btn secondary sm" data-p-save="'+p.id+'">Salvar</button><button class="btn danger sm" data-p-delete="'+p.id+'">Excluir</button></div></div>';
+  return'<div class="item"><div class="itemTop"><div><strong>'+esc(p.name)+'</strong><div class="meta">'+(p.price?money(p.price):'Valor não definido')+'</div></div><span class="badge '+(ready?'ok':'warn')+'">'+(ready?'Pronto':'Definir valor')+'</span></div><div style="margin-top:8px"><input class="input" data-p-price="'+p.id+'" type="number" min="0" step="0.01" value="'+(p.price||'')+'" placeholder="Valor"></div><div class="actions" style="margin-top:8px"><button class="btn secondary sm" data-p-save="'+p.id+'">Salvar</button><button class="btn danger sm" data-p-delete="'+p.id+'">Excluir</button></div></div>';
  }).join('');
  qsa('[data-p-save]').forEach(function(b){b.onclick=function(){updateProcedure(b.getAttribute('data-p-save'))}});
  qsa('[data-p-delete]').forEach(function(b){b.onclick=function(){deleteProcedure(b.getAttribute('data-p-delete'))}});
 }
 function updateProcedure(id){
  var p=procedureById(id);if(!p)return;
- var price=Number(document.querySelector('[data-p-price="'+id+'"]').value||0),min=Number(document.querySelector('[data-p-min="'+id+'"]').value||0),duration=Math.max(15,Number(document.querySelector('[data-p-duration="'+id+'"]').value||60));
- if(price<=0||min<=0||min>price){toast('Confira o preço avulso e o menor valor seguro.');return}
- p.price=price;p.minPrice=min;p.duration=duration;write(KEYS.procedures,procedures);refreshAll();toast('Procedimento atualizado.');
+ var price=Number(document.querySelector('[data-p-price="'+id+'"]').value||0);
+ if(price<=0){toast('Digite um valor maior que zero.');return}
+ p.price=price;p.minPrice=Number((price*0.80).toFixed(2));p.duration=60;p.notes='';
+ write(KEYS.procedures,procedures);refreshAll();toast('Valor atualizado.');
 }
 function deleteProcedure(id){
  if(!confirm('Excluir este procedimento? Os pacotes já salvos continuam iguais.'))return;
@@ -199,55 +198,62 @@ function deleteProcedure(id){
 
 function addBuilder(){
  var p=procedureById(el('builderProcedure').value),sessions=Math.max(1,Number(el('builderSessions').value||1));
- if(!p||!validProcedure(p)){toast('Escolha um procedimento configurado.');return}
+ if(!p||!validProcedure(p)){toast('Escolha um procedimento com valor definido.');return}
  var old=builder.find(function(i){return i.procedureId===p.id});
  if(old)old.sessions+=sessions;
- else builder.push({procedureId:p.id,name:p.name,sessions:sessions,unitPrice:Number(p.price),minPrice:Number(p.minPrice)});
+ else builder.push({procedureId:p.id,name:p.name,sessions:sessions,unitPrice:Number(p.price),minPrice:Number((Number(p.price)*0.80).toFixed(2))});
  el('builderSessions').value='1';renderBuilder();
 }
 function renderBuilder(){
  el('builderList').innerHTML=builder.length?builder.map(function(i,index){
-  return'<div class="builderRow"><div><strong>'+esc(i.name)+'</strong><div class="meta">'+money(i.unitPrice)+' / sessão</div></div><input type="number" min="1" value="'+i.sessions+'" data-b-sessions="'+index+'"><input type="number" min="0" step="0.01" value="'+i.unitPrice+'" data-b-price="'+index+'"><button class="remove" data-b-remove="'+index+'">×</button></div>';
+  return'<div class="builderRow"><div><strong>'+esc(i.name)+'</strong><div class="meta">'+money(i.unitPrice)+' por sessão</div></div><input type="number" min="1" value="'+i.sessions+'" data-b-sessions="'+index+'" aria-label="Sessões"><button class="remove" data-b-remove="'+index+'">×</button></div>';
  }).join(''):'<div class="empty">Adicione os procedimentos do pacote.</div>';
  qsa('[data-b-sessions]').forEach(function(inp){inp.onchange=function(){var i=Number(inp.getAttribute('data-b-sessions'));builder[i].sessions=Math.max(1,Number(inp.value||1));renderPackageSummary()}});
- qsa('[data-b-price]').forEach(function(inp){inp.onchange=function(){var i=Number(inp.getAttribute('data-b-price'));builder[i].unitPrice=Math.max(0,Number(inp.value||0));renderPackageSummary()}});
  qsa('[data-b-remove]').forEach(function(b){b.onclick=function(){builder.splice(Number(b.getAttribute('data-b-remove')),1);renderBuilder()}});
  renderPackageSummary();
 }
+function automaticPackageDiscount(sessions,procedureCount){
+ var base=sessions>=9?12:sessions>=6?10:sessions>=4?8:sessions>=2?5:0;
+ var bonus=procedureCount>=3?3:procedureCount>=2?2:0;
+ return Math.min(15,base+bonus);
+}
 function calcPackage(){
  var subtotal=builder.reduce(function(s,i){return s+i.sessions*i.unitPrice},0);
- var floor=builder.reduce(function(s,i){return s+i.sessions*i.minPrice},0);
+ var floor=Number((subtotal*0.80).toFixed(2));
  var sessions=builder.reduce(function(s,i){return s+i.sessions},0);
- var discountPct=Math.min(100,Math.max(0,Number(el('packageDiscount').value||0)));
+ var procedureCount=builder.length;
+ var autoPct=automaticPackageDiscount(sessions,procedureCount);
+ var extraPct=Math.min(20,Math.max(0,Number(el('packageExtraDiscount').value||0)));
+ var discountPct=autoPct+extraPct;
  var discount=subtotal*discountPct/100,total=Math.max(0,subtotal-discount);
- var maxDiscount=subtotal>0?Math.max(0,(subtotal-floor)/subtotal*100):0;
- var tier=sessions>=10?15:sessions>=6?10:sessions>=3?7:5;
- var suggested=Math.min(tier,maxDiscount);
- var installments=Math.max(1,Number(el('packageInstallments').value||1));
- return{subtotal:subtotal,floor:floor,sessions:sessions,discountPct:discountPct,discount:discount,total:total,maxDiscount:maxDiscount,suggested:suggested,installments:installments};
+ var maxDiscount=20;
+ return{subtotal:subtotal,floor:floor,sessions:sessions,procedureCount:procedureCount,autoPct:autoPct,extraPct:extraPct,discountPct:discountPct,discount:discount,total:total,maxDiscount:maxDiscount};
 }
 function renderPackageSummary(){
  var c=calcPackage();
- el('packageSummary').innerHTML='<div class="sumRow"><span>Valor avulso</span><strong>'+money(c.subtotal)+'</strong></div><div class="sumRow"><span>Economia da cliente</span><strong>'+money(c.discount)+'</strong></div><div class="sumRow"><span>Preço mínimo seguro</span><strong>'+money(c.floor)+'</strong></div><div class="sumRow"><span>Desconto aplicado</span><strong>'+c.discountPct.toFixed(1).replace('.',',')+'%</strong></div><div class="sumRow"><span>Parcelamento</span><strong>'+c.installments+'x de '+money(c.installments?c.total/c.installments:0)+'</strong></div><div class="sumRow total"><span>Valor do pacote</span><strong>'+money(c.total)+'</strong></div>';
+ if(el('autoDiscountDisplay'))el('autoDiscountDisplay').value=c.autoPct.toFixed(0)+'%';
+ var autoValue=c.subtotal*c.autoPct/100,extraValue=c.subtotal*c.extraPct/100;
+ el('packageSummary').innerHTML='<div class="sumRow"><span>Valor avulso</span><strong>'+money(c.subtotal)+'</strong></div><div class="sumRow"><span>Desconto automático do pacote</span><strong>-'+money(autoValue)+' ('+c.autoPct.toFixed(0)+'%)</strong></div><div class="sumRow"><span>Desconto extra</span><strong>-'+money(extraValue)+' ('+c.extraPct.toFixed(1).replace('.',',')+'%)</strong></div><div class="sumRow"><span>Economia da cliente</span><strong>'+money(c.discount)+'</strong></div><div class="sumRow total"><span>Valor do pacote</span><strong>'+money(c.total)+'</strong></div>';
  var box=el('safeBox');
- if(!builder.length){box.className='safe ok';box.textContent='Adicione os procedimentos para calcular a sugestão.'}
- else if(c.total+0.01<c.floor){box.className='safe bad';box.textContent='🔴 Desconto abaixo do preço mínimo seguro. Reduza o desconto.'}
- else if(c.discountPct>c.suggested+3){box.className='safe warn';box.textContent='🟡 Ainda está acima do mínimo, mas o desconto passou da sugestão. Sugestão: até '+c.suggested.toFixed(0)+'%.'}
- else{box.className='safe ok';box.textContent='🟢 Desconto dentro do limite definido. Sugestão: até '+c.suggested.toFixed(0)+'% · máximo permitido pelo mínimo: '+c.maxDiscount.toFixed(1).replace('.',',')+'%.'}
+ if(!builder.length){box.className='safe ok';box.textContent='Adicione os procedimentos para o app calcular o desconto automático.'}
+ else if(c.discountPct>c.maxDiscount){box.className='safe bad';box.textContent='🔴 Desconto total de '+c.discountPct.toFixed(1).replace('.',',')+'% passou do limite seguro de 20%. Diminua o desconto extra.'}
+ else if(c.discountPct>=18){box.className='safe warn';box.textContent='🟡 Atenção: o desconto total está em '+c.discountPct.toFixed(1).replace('.',',')+'%. Ainda está dentro do limite, mas já está alto.'}
+ else{box.className='safe ok';box.textContent='🟢 Desconto seguro. O app aplicou '+c.autoPct.toFixed(0)+'% automaticamente'+(c.extraPct>0?' + '+c.extraPct.toFixed(1).replace('.',',')+'% extra.':'.')}
 }
+
 function draftPackage(){
- var c=clientById(el('packageClient').value),calc=calcPackage();
- if(!c){toast('Escolha a cliente.');return null}
+ var client=clientById(el('packageClient').value),calc=calcPackage();
+ if(!client){toast('Escolha a cliente.');return null}
  if(!builder.length){toast('Adicione pelo menos um procedimento.');return null}
- if(calc.total+0.01<calc.floor){toast('O valor do pacote está abaixo do mínimo seguro.');return null}
- return{id:uid(),clientId:c.id,clientName:c.name,clientPhone:c.phone,name:el('packageName').value.trim()||'Pacote Personalizado',items:builder.map(function(i){return Object.assign({},i)}),subtotal:calc.subtotal,safeFloor:calc.floor,discountPct:calc.discountPct,total:calc.total,received:0,installments:calc.installments,validity:Number(el('packageValidity').value||90),createdAt:new Date().toISOString(),status:'Ativo'};
+ if(calc.discountPct>calc.maxDiscount){toast('Diminua o desconto extra. O desconto total não pode passar de 20%.');return null}
+ return{id:uid(),clientId:client.id,clientName:client.name,clientPhone:client.phone,name:el('packageName').value.trim()||'Pacote Personalizado',items:builder.map(function(i){return Object.assign({},i)}),subtotal:calc.subtotal,safeFloor:calc.floor,autoDiscountPct:calc.autoPct,extraDiscountPct:calc.extraPct,discountPct:calc.discountPct,total:calc.total,received:0,validity:Number(el('packageValidity').value||90),createdAt:new Date().toISOString(),status:'Ativo'};
 }
 function savePackage(){
- var p=draftPackage();if(!p)return;packages.unshift(p);write(KEYS.packages,packages);builder=[];el('packageName').value='';el('packageDiscount').value='0';refreshAll();toast('Pacote salvo.');
+ var p=draftPackage();if(!p)return;packages.unshift(p);write(KEYS.packages,packages);builder=[];el('packageName').value='';el('packageExtraDiscount').value='0';refreshAll();toast('Pacote salvo.');
 }
 function proposalText(){
  var p=draftPackage();if(!p)return'';
- return'✨ '+p.name.toUpperCase()+'\n\nCliente: '+p.clientName+'\n\n'+p.items.map(function(i){return'• '+i.name+': '+i.sessions+' sessão(ões)'}).join('\n')+'\n\nValor avulso: '+money(p.subtotal)+'\nDesconto: '+p.discountPct+'%\nVALOR DO PACOTE: '+money(p.total)+'\nPagamento: '+p.installments+'x de '+money(p.total/p.installments)+'\nValidade: '+p.validity+' dias\n\nSerá um prazer cuidar de você! 💗\nEsteticista Loyara Lobo';
+ return'✨ '+p.name.toUpperCase()+'\n\nCliente: '+p.clientName+'\n\n'+p.items.map(function(i){return'• '+i.name+': '+i.sessions+' sessão(ões)'}).join('\n')+'\n\nValor avulso: '+money(p.subtotal)+'\nDesconto automático: '+Number(p.autoDiscountPct||0).toFixed(0)+'%'+(Number(p.extraDiscountPct||0)>0?'\nDesconto extra: '+Number(p.extraDiscountPct).toFixed(1).replace('.',',')+'%':'')+'\nEconomia: '+money(p.subtotal-p.total)+'\nVALOR DO PACOTE: '+money(p.total)+'\nValidade: '+p.validity+' dias\n\nSerá um prazer cuidar de você! 💗\nEsteticista Loyara Lobo';
 }
 function copyProposal(){var t=proposalText();if(!t)return;navigator.clipboard.writeText(t).then(function(){toast('Proposta copiada.')}).catch(function(){toast('Não foi possível copiar.')})}
 function sendProposal(){var t=proposalText();if(!t)return;var c=clientById(el('packageClient').value);openWhats(c?c.phone:'',t)}
@@ -258,14 +264,33 @@ function renderPackages(){
  }).join(''):'<div class="empty">Nenhum pacote salvo.</div>';
 }
 
+function fillAppointmentClient(id){
+ var c=clientById(id);
+ if(c){el('apptClientName').value=c.name||'';el('apptClientPhone').value=c.phone||''}
+ else{el('apptClientName').value='';el('apptClientPhone').value=''}
+}
 function saveAppointment(){
- var c=clientById(el('apptClient').value),p=procedureById(el('apptProcedure').value),date=el('apptDate').value,time=el('apptTime').value;
- if(!c||!p||!date||!time){toast('Preencha cliente, procedimento, data e hora.');return}
+ var selected=clientById(el('apptClient').value),p=procedureById(el('apptProcedure').value),date=el('apptDate').value,time=el('apptTime').value;
+ var name=el('apptClientName').value.trim(),phone=el('apptClientPhone').value.trim(),notes=el('apptNotes').value.trim();
+ if(!name||!phone||!p||!date||!time){toast('Preencha nome, WhatsApp, procedimento, data e hora.');return}
  var clash=appointments.some(function(a){return a.date===date&&a.time===time&&a.status==='Agendado'});
  if(clash){toast('Esse horário já está ocupado.');return}
- appointments.push({id:uid(),clientId:c.id,clientName:c.name,clientPhone:c.phone,procedureId:p.id,procedureName:p.name,date:date,time:time,notes:el('apptNotes').value.trim(),status:'Agendado',createdAt:new Date().toISOString()});
+ var client=selected;
+ if(client){
+  client.name=name;client.phone=phone;write(KEYS.clients,clients);
+ }else{
+  var digits=phone.replace(/\D/g,'');
+  client=clients.find(function(x){return digits&&String(x.phone||'').replace(/\D/g,'')===digits});
+  if(!client){
+   client={id:uid(),name:name,phone:phone,notes:'Cadastrada automaticamente ao criar um agendamento.',favorite:false,createdAt:new Date().toISOString()};
+   clients.unshift(client);write(KEYS.clients,clients);
+  }
+ }
+ appointments.push({id:uid(),clientId:client.id,clientName:name,clientPhone:phone,procedureId:p.id,procedureName:p.name,date:date,time:time,notes:notes,status:'Agendado',createdAt:new Date().toISOString()});
  appointments.sort(function(a,b){return(a.date+a.time).localeCompare(b.date+b.time)});
- write(KEYS.appointments,appointments);el('apptNotes').value='';closeModal('appointmentModal');refreshAll();toast('Agendamento salvo.');
+ write(KEYS.appointments,appointments);
+ el('apptClient').value='';el('apptClientName').value='';el('apptClientPhone').value='';el('apptNotes').value='';
+ closeModal('appointmentModal');refreshAll();toast('Agendamento salvo e cliente registrada.');
 }
 function completeAppointment(id){var a=appointments.find(function(x){return x.id===id});if(!a)return;a.status='Concluído';write(KEYS.appointments,appointments);refreshAll()}
 function cancelAppointment(id){var a=appointments.find(function(x){return x.id===id});if(!a)return;if(!confirm('Cancelar este agendamento?'))return;a.status='Cancelado';write(KEYS.appointments,appointments);refreshAll()}
@@ -347,7 +372,8 @@ function bind(){
  if(el('agendaDay'))el('agendaDay').onchange=renderAgendaSlots;
  if(el('openScheduleSettings'))el('openScheduleSettings').onclick=function(){renderScheduleModal();openModal('scheduleModal')};
  if(el('saveSchedule'))el('saveSchedule').onclick=saveSchedule;
- el('saveClient').onclick=saveClient;el('clientSearch').oninput=renderClients;el('quickAddProcedure').onclick=quickAddProcedure;el('addBuilder').onclick=addBuilder;el('packageDiscount').oninput=renderPackageSummary;el('packageInstallments').onchange=renderPackageSummary;el('savePackage').onclick=savePackage;el('copyProposal').onclick=copyProposal;el('sendProposal').onclick=sendProposal;el('saveAppointment').onclick=saveAppointment;el('savePayment').onclick=savePayment;el('copyBookingLink').onclick=copyBookingLink;
+ if(el('apptClient'))el('apptClient').onchange=function(){fillAppointmentClient(el('apptClient').value)};
+ el('saveClient').onclick=saveClient;el('clientSearch').oninput=renderClients;el('quickAddProcedure').onclick=quickAddProcedure;el('addBuilder').onclick=addBuilder;el('packageExtraDiscount').oninput=renderPackageSummary;el('savePackage').onclick=savePackage;el('copyProposal').onclick=copyProposal;el('sendProposal').onclick=sendProposal;el('saveAppointment').onclick=saveAppointment;el('savePayment').onclick=savePayment;el('copyBookingLink').onclick=copyBookingLink;
 }
 
 function showAgendaPanel(which){
