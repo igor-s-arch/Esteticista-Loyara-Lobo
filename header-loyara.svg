@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" role="img" aria-labelledby="title desc">
+<title id="title">Esteticista Loyara Lobo</title>
+<desc id="desc">Cabeçalho rosa com identidade visual Loyara Lobo, borboleta, coração e folhas douradas.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#eeb2ad"/>
+    <stop offset=".38" stop-color="#cb827f"/>
+    <stop offset=".72" stop-color="#d8928f"/>
+    <stop offset="1" stop-color="#f1b9b4"/>
+  </linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9b5d22"/>
+    <stop offset=".28" stop-color="#f4cf91"/>
+    <stop offset=".62" stop-color="#bd7b35"/>
+    <stop offset="1" stop-color="#f8dda5"/>
+  </linearGradient>
+  <linearGradient id="silk" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#fff" stop-opacity=".06"/>
+    <stop offset=".55" stop-color="#fff" stop-opacity=".26"/>
+    <stop offset="1" stop-color="#fff" stop-opacity=".45"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="3" stdDeviation="2.2" flood-color="#6f3b3e" flood-opacity=".34"/>
+  </filter>
+  <filter id="soft">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+</defs>
+
+<rect width="1500" height="500" fill="url(#bg)"/>
+<ellipse cx="750" cy="50" rx="510" ry="160" fill="#fff" opacity=".045" filter="url(#soft)"/>
+
+<!-- seda -->
+<path d="M0 368 C150 310 250 390 395 345 C520 307 610 402 760 360 C930 312 1040 390 1170 350 C1300 310 1392 354 1500 325 L1500 500 L0 500 Z" fill="url(#silk)" opacity=".72"/>
+<path d="M0 420 C155 330 292 470 430 392 C575 310 650 468 824 396 C955 342 1110 462 1242 382 C1330 330 1405 362 1500 348 L1500 500 L0 500 Z" fill="#f8d2cf" opacity=".42"/>
+<path d="M0 454 C170 378 315 508 474 424 C600 358 745 508 900 420 C1040 342 1170 500 1320 414 C1402 366 1450 385 1500 388" fill="none" stroke="#fff6f2" stroke-opacity=".36" stroke-width="28"/>
+
+<!-- folhas esquerdas -->
+<g fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".98">
+  <path d="M0 310 C55 270 66 196 80 92"/>
+  <path d="M45 268 C92 238 124 188 152 118"/>
+  <path d="M56 225 C112 211 164 177 208 130"/>
+  <path d="M75 182 C121 168 151 137 179 97"/>
+  <path d="M80 111 C59 74 69 42 91 20 C109 48 112 82 80 111Z"/>
+  <path d="M99 148 C95 109 118 78 151 64 C159 100 144 133 99 148Z"/>
+  <path d="M122 193 C137 154 174 133 214 137 C207 176 175 199 122 193Z"/>
+  <path d="M37 291 C34 247 53 216 86 198 C97 239 80 274 37 291Z"/>
+  <circle cx="34" cy="168" r="10" fill="url(#gold)"/>
+  <circle cx="18" cy="145" r="7" fill="url(#gold)"/>
+  <circle cx="52" cy="143" r="7" fill="url(#gold)"/>
+</g>
+
+<!-- folhas direitas -->
+<g transform="translate(1500 0) scale(-1 1)" fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".98">
+  <path d="M0 310 C55 270 66 196 80 92"/>
+  <path d="M45 268 C92 238 124 188 152 118"/>
+  <path d="M56 225 C112 211 164 177 208 130"/>
+  <path d="M75 182 C121 168 151 137 179 97"/>
+  <path d="M80 111 C59 74 69 42 91 20 C109 48 112 82 80 111Z"/>
+  <path d="M99 148 C95 109 118 78 151 64 C159 100 144 133 99 148Z"/>
+  <path d="M122 193 C137 154 174 133 214 137 C207 176 175 199 122 193Z"/>
+  <circle cx="34" cy="168" r="10" fill="url(#gold)"/>
+  <circle cx="18" cy="145" r="7" fill="url(#gold)"/>
+  <circle cx="52" cy="143" r="7" fill="url(#gold)"/>
+</g>
+
+<!-- texto principal -->
+<g fill="#fffaf5" filter="url(#shadow)">
+  <text x="265" y="132" font-family="Georgia, 'Times New Roman', serif" font-size="26" letter-spacing="9">ESTETICISTA</text>
+  <text x="260" y="232" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="600" letter-spacing="1">LOYARA LOBO</text>
+  <text x="265" y="278" font-family="Georgia, 'Times New Roman', serif" font-size="26" letter-spacing="8">ESTÉTICA E COSMÉTICA</text>
+</g>
+
+<!-- símbolo -->
+<g fill="none" stroke="#fffaf5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
+  <path d="M760 81 C727 122 728 221 747 291 C754 317 771 310 784 284"/>
+  <path d="M757 290 C811 250 852 242 891 247 C929 252 942 280 914 304 C887 327 850 302 860 273 C870 244 904 238 932 258 C958 277 974 298 1009 296 C1038 294 1064 282 1089 276"/>
+  <path d="M932 258 C946 223 982 220 994 247 C1004 270 982 291 958 306"/>
+</g>
+
+<!-- borboleta -->
+<g transform="translate(915 132)" filter="url(#shadow)">
+  <path d="M0 45 C-8 7 17 -2 30 21 C39 -8 67 -7 62 29 C58 48 40 57 30 55 C21 58 7 57 0 45Z" fill="#fff8f0" opacity=".98"/>
+  <path d="M30 21 C31 39 30 52 26 66" fill="none" stroke="#e2b56e" stroke-width="3"/>
+  <path d="M27 18 C19 11 17 4 16 -3 M33 18 C40 10 43 4 45 -2" fill="none" stroke="#d49b52" stroke-width="2.2" stroke-linecap="round"/>
+</g>
+
+<!-- estrelas -->
+<g fill="#fffaf5">
+  <path d="M1000 146 l5 11 11 5-11 5-5 11-5-11-11-5 11-5z"/>
+  <path d="M1031 164 l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/>
+  <path d="M1059 180 l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
+</g>
+
+<line x1="1090" y1="112" x2="1090" y2="300" stroke="#fff7ef" stroke-width="2.5" opacity=".9"/>
+
+<!-- slogan -->
+<g fill="#fffaf5" font-family="Arial, Helvetica, sans-serif" font-size="25" letter-spacing="3.2" filter="url(#shadow)">
+  <text x="1134" y="136">BELEZA</text>
+  <text x="1134" y="176">AUTOESTIMA</text>
+  <text x="1134" y="216">BEM-ESTAR</text>
+  <text x="1134" y="256">EM CADA HISTÓRIA</text>
+</g>
+<path d="M1380 239 C1365 222 1342 234 1348 252 C1353 267 1367 277 1380 288 C1394 277 1408 267 1413 252 C1419 234 1395 222 1380 239Z" fill="none" stroke="#fffaf5" stroke-width="3"/>
+</svg>
