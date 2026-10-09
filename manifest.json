@@ -1,0 +1,19 @@
+{
+  "name": "Esteticista Loyara Lobo",
+  "short_name": "Loyara Lobo",
+  "description": "Clientes, procedimentos, pacotes, agenda, financeiro e lucro.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf7",
+  "theme_color": "#8e4f59",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
