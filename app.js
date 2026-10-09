@@ -241,7 +241,7 @@ function renderBuilder(){
  renderPackageSummary();
 }
 function automaticPackageDiscount(){
- return builder.length?10:0;
+ return builder.length?5:0;
 }
 function calcPackage(){
  var subtotal=builder.reduce(function(s,i){return s+i.sessions*i.unitPrice},0);
@@ -249,7 +249,7 @@ function calcPackage(){
  var sessions=builder.reduce(function(s,i){return s+i.sessions},0);
  var procedureCount=builder.length;
  var autoPct=automaticPackageDiscount(sessions,procedureCount);
- var extraPct=Math.min(10,Math.max(0,Number(el('packageExtraDiscount').value||0)));
+ var extraPct=Math.min(15,Math.max(0,Number(el('packageExtraDiscount').value||0)));
  var discountPct=autoPct+extraPct;
  var discount=subtotal*discountPct/100,total=Math.max(0,subtotal-discount);
  var maxDiscount=20;
