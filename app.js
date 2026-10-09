@@ -5,7 +5,8 @@ var KEYS={
  clients:'loyara_clients_v1',
  procedures:'loyara_procedures_v1',
  packages:'loyara_packages_v1',
- appointments:'loyara_appointments_v1'
+ appointments:'loyara_appointments_v1',
+ settings:'loyara_settings_v1'
 };
 var DEFAULT_PROCEDURES=[
  'Limpeza de pele','Drenagem linfática','Massagem modeladora','Massagem relaxante',
@@ -15,6 +16,7 @@ var DEFAULT_PROCEDURES=[
 
 function uid(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)}
 function read(key){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return[]}}
+function readObject(key,fallback){try{var v=JSON.parse(localStorage.getItem(key)||'null');return v&&typeof v==='object'&&!Array.isArray(v)?v:fallback}catch(e){return fallback}}
 function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
 function money(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
 function today(){var d=new Date(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return d.getFullYear()+'-'+m+'-'+day}
@@ -31,6 +33,21 @@ var procedures=read(KEYS.procedures);
 var packages=read(KEYS.packages);
 var appointments=read(KEYS.appointments);
 var builder=[];
+var DEFAULT_SETTINGS={
+ lunchStart:'12:00',lunchEnd:'14:00',slotMinutes:30,
+ days:{
+  '0':{enabled:false,start:'08:00',end:'12:00'},
+  '1':{enabled:true,start:'08:00',end:'18:00'},
+  '2':{enabled:true,start:'08:00',end:'18:00'},
+  '3':{enabled:true,start:'08:00',end:'18:00'},
+  '4':{enabled:true,start:'08:00',end:'18:00'},
+  '5':{enabled:true,start:'08:00',end:'18:00'},
+  '6':{enabled:true,start:'08:00',end:'12:00'}
+ }
+};
+var settings=readObject(KEYS.settings,JSON.parse(JSON.stringify(DEFAULT_SETTINGS)));
+if(!settings.days)settings=JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+write(KEYS.settings,settings);
 
 if(!localStorage.getItem(KEYS.procedures)){
  procedures=DEFAULT_PROCEDURES.map(function(name,i){return{id:'default-'+i,name:name,price:0,minPrice:0,duration:60,notes:''}});
@@ -125,12 +142,28 @@ function renderClients(){
  }).join('')+'<div class="favPerson"><button class="favAvatar" data-open-inline="clientModal">＋</button><span>Adicionar</span></div>':'<div class="favPerson"><button class="favAvatar" data-open-inline="clientModal">＋</button><span>Adicionar favorita</span></div>';
  el('clientList').innerHTML=data.length?data.map(function(c){
   var ps=packages.filter(function(p){return p.clientId===c.id});
-  return'<div class="item"><div class="itemTop"><div><strong>'+esc(c.name)+'</strong><div class="meta">'+esc(c.phone||'Sem telefone')+' · '+ps.length+' pacote(s)</div></div><button class="favorite '+(c.favorite?'on':'')+'" data-fav="'+c.id+'">'+(c.favorite?'♥':'♡')+'</button></div>'+(c.notes?'<div class="meta">'+esc(c.notes)+'</div>':'')+'<div class="actions"><button class="btn secondary sm" data-msg="'+c.id+'">WhatsApp</button><button class="btn gold sm" data-rem="'+c.id+'">Lembrete</button></div></div>';
+  var ag=appointments.filter(function(a){return a.clientId===c.id});
+  return'<div class="item"><div class="itemTop"><div><strong>'+esc(c.name)+'</strong><div class="meta">'+esc(c.phone||'Sem telefone')+' · '+ps.length+' pacote(s) · '+ag.length+' agendamento(s)</div></div><button class="favorite '+(c.favorite?'on':'')+'" data-fav="'+c.id+'">'+(c.favorite?'♥':'♡')+'</button></div>'+(c.notes?'<div class="meta">'+esc(c.notes)+'</div>':'')+'<div class="actions"><button class="btn secondary sm" data-client-detail="'+c.id+'">Ver histórico</button><button class="btn secondary sm" data-msg="'+c.id+'">WhatsApp</button><button class="btn gold sm" data-rem="'+c.id+'">Lembrete</button></div></div>';
  }).join(''):'<div class="empty">Nenhuma cliente cadastrada.</div>';
  qsa('[data-fav]').forEach(function(b){b.onclick=function(){toggleFavorite(b.getAttribute('data-fav'))}});
  qsa('[data-msg]').forEach(function(b){b.onclick=function(){messageClient(b.getAttribute('data-msg'))}});
  qsa('[data-rem]').forEach(function(b){b.onclick=function(){reminderClient(b.getAttribute('data-rem'))}});
+ qsa('[data-client-detail]').forEach(function(b){b.onclick=function(){openClientDetail(b.getAttribute('data-client-detail'))}});
  qsa('[data-open-inline]').forEach(function(b){b.onclick=function(){openModal(b.getAttribute('data-open-inline'))}});
+}
+
+function openClientDetail(id){
+ var c=clientById(id);if(!c)return;
+ var ps=packages.filter(function(p){return p.clientId===id});
+ var ag=appointments.filter(function(a){return a.clientId===id}).sort(function(a,b){return(b.date+b.time).localeCompare(a.date+a.time)});
+ el('clientDetailTitle').textContent=c.name;
+ el('clientDetailBody').innerHTML=
+  '<div class="card" style="box-shadow:none"><div class="meta">'+esc(c.phone||'Sem telefone')+'</div>'+(c.notes?'<div class="meta" style="margin-top:7px">'+esc(c.notes)+'</div>':'')+'<div class="actions"><button class="btn secondary sm" id="detailMsg">WhatsApp</button><button class="btn gold sm" id="detailReminder">Lembrete</button></div></div>'+
+  '<div class="historyBlock"><h4>Pacotes</h4>'+(ps.length?ps.map(function(p){return'<div class="item"><strong>'+esc(p.name)+'</strong><div class="meta">'+money(p.total)+' · recebido '+money(receivedTotal(p))+'</div></div>'}).join(''):'<div class="empty">Nenhum pacote.</div>')+'</div>'+
+  '<div class="historyBlock"><h4>Agendamentos</h4>'+(ag.length?ag.map(function(a){return'<div class="item"><strong>'+esc(a.procedureName||a.procedure||'Atendimento')+'</strong><div class="meta">'+formatDate(a.date)+' às '+esc(a.time)+' · '+esc(a.status)+'</div>'+(a.notes?'<div class="meta">'+esc(a.notes)+'</div>':'')+'</div>'}).join(''):'<div class="empty">Nenhum agendamento.</div>')+'</div>';
+ openModal('clientDetailModal');
+ if(el('detailMsg'))el('detailMsg').onclick=function(){messageClient(id)};
+ if(el('detailReminder'))el('detailReminder').onclick=function(){reminderClient(id)};
 }
 
 function quickAddProcedure(){
@@ -195,7 +228,7 @@ function calcPackage(){
 }
 function renderPackageSummary(){
  var c=calcPackage();
- el('packageSummary').innerHTML='<div class="sumRow"><span>Valor avulso</span><strong>'+money(c.subtotal)+'</strong></div><div class="sumRow"><span>Preço mínimo seguro</span><strong>'+money(c.floor)+'</strong></div><div class="sumRow"><span>Desconto</span><strong>-'+money(c.discount)+'</strong></div><div class="sumRow"><span>Parcelamento</span><strong>'+c.installments+'x de '+money(c.installments?c.total/c.installments:0)+'</strong></div><div class="sumRow total"><span>Valor do pacote</span><strong>'+money(c.total)+'</strong></div>';
+ el('packageSummary').innerHTML='<div class="sumRow"><span>Valor avulso</span><strong>'+money(c.subtotal)+'</strong></div><div class="sumRow"><span>Economia da cliente</span><strong>'+money(c.discount)+'</strong></div><div class="sumRow"><span>Preço mínimo seguro</span><strong>'+money(c.floor)+'</strong></div><div class="sumRow"><span>Desconto aplicado</span><strong>'+c.discountPct.toFixed(1).replace('.',',')+'%</strong></div><div class="sumRow"><span>Parcelamento</span><strong>'+c.installments+'x de '+money(c.installments?c.total/c.installments:0)+'</strong></div><div class="sumRow total"><span>Valor do pacote</span><strong>'+money(c.total)+'</strong></div>';
  var box=el('safeBox');
  if(!builder.length){box.className='safe ok';box.textContent='Adicione os procedimentos para calcular a sugestão.'}
  else if(c.total+0.01<c.floor){box.className='safe bad';box.textContent='🔴 Desconto abaixo do preço mínimo seguro. Reduza o desconto.'}
@@ -228,9 +261,11 @@ function renderPackages(){
 function saveAppointment(){
  var c=clientById(el('apptClient').value),p=procedureById(el('apptProcedure').value),date=el('apptDate').value,time=el('apptTime').value;
  if(!c||!p||!date||!time){toast('Preencha cliente, procedimento, data e hora.');return}
- appointments.push({id:uid(),clientId:c.id,clientName:c.name,clientPhone:c.phone,procedureId:p.id,procedureName:p.name,date:date,time:time,status:'Agendado',createdAt:new Date().toISOString()});
+ var clash=appointments.some(function(a){return a.date===date&&a.time===time&&a.status==='Agendado'});
+ if(clash){toast('Esse horário já está ocupado.');return}
+ appointments.push({id:uid(),clientId:c.id,clientName:c.name,clientPhone:c.phone,procedureId:p.id,procedureName:p.name,date:date,time:time,notes:el('apptNotes').value.trim(),status:'Agendado',createdAt:new Date().toISOString()});
  appointments.sort(function(a,b){return(a.date+a.time).localeCompare(b.date+b.time)});
- write(KEYS.appointments,appointments);closeModal('appointmentModal');refreshAll();toast('Agendamento salvo.');
+ write(KEYS.appointments,appointments);el('apptNotes').value='';closeModal('appointmentModal');refreshAll();toast('Agendamento salvo.');
 }
 function completeAppointment(id){var a=appointments.find(function(x){return x.id===id});if(!a)return;a.status='Concluído';write(KEYS.appointments,appointments);refreshAll()}
 function cancelAppointment(id){var a=appointments.find(function(x){return x.id===id});if(!a)return;if(!confirm('Cancelar este agendamento?'))return;a.status='Cancelado';write(KEYS.appointments,appointments);refreshAll()}
@@ -238,16 +273,47 @@ function bookingReminder(id){
  var a=appointments.find(function(x){return x.id===id});if(!a)return;
  openWhats(a.clientPhone,'Olá, '+a.clientName+'! 💗 Seu atendimento de '+a.procedureName+' está confirmado para '+formatDate(a.date)+' às '+a.time+'. Qualquer imprevisto, me avise com antecedência. Te espero!\n\nEsteticista Loyara Lobo');
 }
+function hm(v){var p=String(v||'00:00').split(':');return Number(p[0]||0)*60+Number(p[1]||0)}
+function mh(v){return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')}
+function dayIndex(date){return String(new Date(date+'T12:00:00').getDay())}
+function buildSlots(date){
+ var cfg=settings.days[dayIndex(date)]||{enabled:false,start:'08:00',end:'18:00'};
+ if(!cfg.enabled)return[];
+ var out=[],start=hm(cfg.start),end=hm(cfg.end),step=Math.max(30,Number(settings.slotMinutes||30)),ls=hm(settings.lunchStart),le=hm(settings.lunchEnd);
+ for(var t=start;t<end;t+=step){
+  var time=mh(t),inLunch=le>ls&&t>=ls&&t<le,busy=appointments.some(function(a){return a.date===date&&a.time===time&&a.status==='Agendado'});
+  if(!inLunch)out.push({time:time,busy:busy});
+ }
+ return out;
+}
+function renderAgendaSlots(){
+ if(!el('agendaDay'))return;
+ var date=el('agendaDay').value||today();el('agendaDay').value=date;
+ var slots=buildSlots(date);
+ el('agendaSlots').innerHTML=slots.length?slots.map(function(s){return'<button class="timeChip '+(s.busy?'occupied':'free')+'" '+(s.busy?'disabled':'data-slot="'+s.time+'"')+'>'+s.time+(s.busy?' · ocupado':'')+'</button>'}).join(''):'<div class="empty" style="grid-column:1/-1">Sem atendimento configurado neste dia.</div>';
+ qsa('[data-slot]').forEach(function(b){b.onclick=function(){openModal('appointmentModal');fillSelectors();el('apptDate').value=date;el('apptTime').value=b.getAttribute('data-slot')}});
+}
+function renderScheduleModal(){
+ var names=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+ el('scheduleRows').innerHTML=names.map(function(name,i){var d=settings.days[String(i)]||DEFAULT_SETTINGS.days[String(i)];return'<div class="scheduleGrid" style="margin-bottom:7px"><label><input type="checkbox" data-day-enabled="'+i+'" '+(d.enabled?'checked':'')+'> <strong>'+name+'</strong></label><input class="input" type="time" data-day-start="'+i+'" value="'+d.start+'"><input class="input" type="time" data-day-end="'+i+'" value="'+d.end+'"></div>'}).join('');
+ el('lunchStart').value=settings.lunchStart;el('lunchEnd').value=settings.lunchEnd;el('slotMinutes').value=String(settings.slotMinutes||30);
+}
+function saveSchedule(){
+ for(var i=0;i<7;i++){settings.days[String(i)]={enabled:document.querySelector('[data-day-enabled="'+i+'"]').checked,start:document.querySelector('[data-day-start="'+i+'"]').value||'08:00',end:document.querySelector('[data-day-end="'+i+'"]').value||'18:00'}}
+ settings.lunchStart=el('lunchStart').value||'12:00';settings.lunchEnd=el('lunchEnd').value||'14:00';settings.slotMinutes=Number(el('slotMinutes').value||30);
+ write(KEYS.settings,settings);closeModal('scheduleModal');renderAgendaSlots();toast('Horários salvos.');
+}
 function renderAgenda(){
  var data=appointments.slice().sort(function(a,b){return(a.date+a.time).localeCompare(b.date+b.time)});
  el('agendaList').innerHTML=data.length?data.map(function(a){
   var cls=a.status==='Concluído'?'ok':a.status==='Cancelado'?'bad':'';
-  return'<div class="item"><div class="itemTop"><div><strong>'+esc(a.clientName)+'</strong><div class="meta">'+formatDate(a.date)+' às '+esc(a.time)+' · '+esc(a.procedureName||a.procedure||'Procedimento')+'</div></div><span class="badge '+cls+'">'+a.status+'</span></div><div class="actions">'+(a.status==='Agendado'?'<button class="btn green sm" data-appt-complete="'+a.id+'">Concluir</button><button class="btn danger sm" data-appt-cancel="'+a.id+'">Cancelar</button>':'')+'<button class="btn gold sm" data-appt-reminder="'+a.id+'">Enviar lembrete</button></div></div>';
+  return'<div class="item"><div class="itemTop"><div><strong>'+esc(a.clientName)+'</strong><div class="meta">'+formatDate(a.date)+' às '+esc(a.time)+' · '+esc(a.procedureName||a.procedure||'Procedimento')+'</div>'+(a.notes?'<div class="meta">'+esc(a.notes)+'</div>':'')+'</div><span class="badge '+cls+'">'+a.status+'</span></div><div class="actions">'+(a.status==='Agendado'?'<button class="btn green sm" data-appt-complete="'+a.id+'">Concluir</button><button class="btn danger sm" data-appt-cancel="'+a.id+'">Cancelar</button>':'')+'<button class="btn gold sm" data-appt-reminder="'+a.id+'">Enviar lembrete</button></div></div>';
  }).join(''):'<div class="empty">Nenhum atendimento agendado.</div>';
  qsa('[data-appt-complete]').forEach(function(b){b.onclick=function(){completeAppointment(b.getAttribute('data-appt-complete'))}});
  qsa('[data-appt-cancel]').forEach(function(b){b.onclick=function(){cancelAppointment(b.getAttribute('data-appt-cancel'))}});
  qsa('[data-appt-reminder]').forEach(function(b){b.onclick=function(){bookingReminder(b.getAttribute('data-appt-reminder'))}});
  el('bookingLink').textContent=location.href.split(/[?#]/)[0]+'?agendar=1';
+ renderAgendaSlots();
 }
 
 function renderFinance(){
@@ -272,10 +338,15 @@ function bind(){
  qsa('[data-close]').forEach(function(b){b.onclick=function(){closeModal(b.getAttribute('data-close'))}});
  if(el('goPackageHome'))el('goPackageHome').onclick=function(){navigate('packages')};
  if(el('goAgendaHome'))el('goAgendaHome').onclick=function(){navigate('agenda')};
+ if(el('goNewAppointment'))el('goNewAppointment').onclick=function(){openModal('appointmentModal');fillSelectors();el('apptDate').value=today()};
+ if(el('goFavoritesHome'))el('goFavoritesHome').onclick=function(){el('favoriteClients').scrollIntoView({behavior:'smooth',block:'center'})};
  if(el('goBookingHome'))el('goBookingHome').onclick=function(){navigate('agenda');showAgendaPanel('link')};
  if(el('showAllClients'))el('showAllClients').onclick=function(){el('allClientsCard').scrollIntoView({behavior:'smooth',block:'start'})};
  if(el('agendaTabMine'))el('agendaTabMine').onclick=function(){showAgendaPanel('mine')};
  if(el('agendaTabLink'))el('agendaTabLink').onclick=function(){showAgendaPanel('link')};
+ if(el('agendaDay'))el('agendaDay').onchange=renderAgendaSlots;
+ if(el('openScheduleSettings'))el('openScheduleSettings').onclick=function(){renderScheduleModal();openModal('scheduleModal')};
+ if(el('saveSchedule'))el('saveSchedule').onclick=saveSchedule;
  el('saveClient').onclick=saveClient;el('clientSearch').oninput=renderClients;el('quickAddProcedure').onclick=quickAddProcedure;el('addBuilder').onclick=addBuilder;el('packageDiscount').oninput=renderPackageSummary;el('packageInstallments').onchange=renderPackageSummary;el('savePackage').onclick=savePackage;el('copyProposal').onclick=copyProposal;el('sendProposal').onclick=sendProposal;el('saveAppointment').onclick=saveAppointment;el('savePayment').onclick=savePayment;el('copyBookingLink').onclick=copyBookingLink;
 }
 
@@ -294,4 +365,6 @@ window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();def
 if(el('installBtn'))el('installBtn').addEventListener('click',function(){if(!deferredPrompt){toast('Use o menu do navegador e escolha Adicionar à tela inicial.');return}deferredPrompt.prompt();deferredPrompt.userChoice.finally(function(){deferredPrompt=null;if(el('installBtn'))el('installBtn').style.display='none'})});
 
 bind();refreshAll();
+if(el('agendaDay'))el('agendaDay').value=today();
+if(location.search.indexOf('agendar=1')>=0){navigate('agenda');showAgendaPanel('link')}
 })();
