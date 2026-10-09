@@ -1,12 +1,12 @@
 {
   "name": "Esteticista Loyara Lobo",
   "short_name": "Loyara Lobo",
-  "description": "Clientes, procedimentos, pacotes, agenda, financeiro e lucro.",
+  "description": "Clientes, pacotes, agenda, lembretes e financeiro da Esteticista Loyara Lobo.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fffaf7",
-  "theme_color": "#8e4f59",
+  "theme_color": "#9b5964",
   "lang": "pt-BR",
   "icons": [
     {
