@@ -1,5 +1,5 @@
-const CACHE='loyara-lobo-v11';
-const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon.svg','./Elegância em Rosa e Ouro (1).png'];
+const CACHE='loyara-lobo-v12';
+const ASSETS=['./','./index.html','./app.js','./manifest.json','./icon.svg','./%C3%8Dcone%20Luxuoso%20Loyara%20Lobo.png','./Elegância em Rosa e Ouro (1).png'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
