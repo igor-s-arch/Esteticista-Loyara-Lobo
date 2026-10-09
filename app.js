@@ -240,10 +240,8 @@ function renderBuilder(){
  qsa('[data-b-remove]').forEach(function(b){b.onclick=function(){builder.splice(Number(b.getAttribute('data-b-remove')),1);renderBuilder()}});
  renderPackageSummary();
 }
-function automaticPackageDiscount(sessions,procedureCount){
- var base=sessions>=9?12:sessions>=6?10:sessions>=4?8:sessions>=2?5:0;
- var bonus=procedureCount>=3?3:procedureCount>=2?2:0;
- return Math.min(15,base+bonus);
+function automaticPackageDiscount(){
+ return builder.length?10:0;
 }
 function calcPackage(){
  var subtotal=builder.reduce(function(s,i){return s+i.sessions*i.unitPrice},0);
@@ -251,7 +249,7 @@ function calcPackage(){
  var sessions=builder.reduce(function(s,i){return s+i.sessions},0);
  var procedureCount=builder.length;
  var autoPct=automaticPackageDiscount(sessions,procedureCount);
- var extraPct=Math.min(20,Math.max(0,Number(el('packageExtraDiscount').value||0)));
+ var extraPct=Math.min(10,Math.max(0,Number(el('packageExtraDiscount').value||0)));
  var discountPct=autoPct+extraPct;
  var discount=subtotal*discountPct/100,total=Math.max(0,subtotal-discount);
  var maxDiscount=20;
