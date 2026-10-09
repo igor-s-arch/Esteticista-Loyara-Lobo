@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#9b5964">
+<meta name="theme-color" content="#f3d4d1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Loyara Lobo">
 <title>Esteticista Loyara Lobo</title>
@@ -11,111 +11,143 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
 <style>
-:root{--rose:#c77b84;--rose2:#e3a7ac;--wine:#713f47;--wine2:#512d33;--pink:#f3cbcd;--cream:#fffaf7;--soft:#fff2ef;--ink:#433236;--muted:#88757a;--line:#ecd8d7;--gold:#d0aa70;--green:#3c8061;--red:#b8525b;--shadow:0 16px 42px rgba(103,61,68,.13)}
-*{box-sizing:border-box}html{background:#f8efeb}body{margin:0;min-height:100vh;color:var(--ink);background:radial-gradient(circle at 5% 0,#f2d4d3 0,transparent 25rem),linear-gradient(180deg,#f9efeb,#fffaf7);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(100%,850px);margin:auto;min-height:100vh;padding-bottom:91px}
-.hero{position:relative;overflow:hidden;padding:20px 17px 26px;color:#fff;background:linear-gradient(145deg,#bd737c,#89515b 58%,#663941);border-radius:0 0 33px 33px;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;right:-100px;top:-120px;background:rgba(255,255,255,.08);box-shadow:0 0 0 28px rgba(255,255,255,.024),0 0 0 58px rgba(255,255,255,.016)}.brand{position:relative;z-index:1;display:flex;align-items:center;gap:13px}.brand img{width:68px;height:68px;border-radius:20px;background:#e9b3b3;border:1px solid rgba(255,255,255,.36);box-shadow:0 9px 22px rgba(0,0,0,.15)}.brand h1{margin:0;font-family:Georgia,serif;font-size:23px;letter-spacing:.1px}.brand p{margin:5px 0 0;color:#f6dedf;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}.installBtn{display:none;margin-left:auto;border:1px solid rgba(255,255,255,.26);background:rgba(255,255,255,.10);color:#fff;border-radius:11px;padding:8px 10px;font-size:10px;font-weight:900}.welcome{position:relative;z-index:1;margin-top:17px}.welcome b{font-family:Georgia,serif;font-size:20px}.welcome span{display:block;margin-top:3px;color:#f6e3e4;font-size:11px}.heroStats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px}.heroStat{padding:9px;border-radius:13px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.08)}.heroStat small{display:block;font-size:8px;font-weight:900;letter-spacing:.6px;color:#f2d8da;text-transform:uppercase}.heroStat strong{display:block;margin-top:4px;font-size:13px;color:#fff5df}
-.content{padding:13px}.screen{display:none}.screen.active{display:block;animation:fade .17s ease}@keyframes fade{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:none}}.pageTitle{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:4px 2px 12px}.pageTitle h2{margin:0;font-family:Georgia,serif;font-size:22px;color:var(--wine)}.pageTitle p{margin:3px 0 0;color:var(--muted);font-size:11px}
-.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:11px;box-shadow:var(--shadow)}.soft{background:linear-gradient(145deg,#fff,#fff7f4)}.sectionTitle{font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:#945962;margin:0 0 9px}.notice{padding:9px 10px;background:#fff4df;border:1px solid #edd5aa;color:#785f39;border-radius:12px;font-size:11px;line-height:1.45}.field{margin-bottom:9px}.field label{display:block;margin-bottom:4px;color:#8c777a;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.45px}.input{width:100%;min-height:44px;border:1px solid #e1cece;border-radius:12px;padding:9px 11px;background:#fffdfc;color:var(--ink);outline:none}.input:focus{border-color:#be747e;box-shadow:0 0 0 3px rgba(190,116,126,.10)}textarea.input{min-height:78px;resize:vertical}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.btn{border:0;border-radius:13px;min-height:44px;padding:0 13px;font-weight:900}.btn.primary{background:linear-gradient(145deg,#c57a84,#a65d67);color:#fff;box-shadow:0 7px 17px rgba(166,93,103,.18)}.btn.secondary{background:#fae9ea;color:#79464f;border:1px solid #edcfd2}.btn.gold{background:linear-gradient(145deg,#eed6ad,#cda56b);color:#45331f}.btn.green{background:#e5f2eb;color:#2c7155;border:1px solid #cce5d7}.btn.danger{background:#fff0f0;color:#a84750;border:1px solid #f0cdd0}.btn.full{width:100%}.btn.sm{min-height:36px;padding:0 10px;border-radius:10px;font-size:10px}.actions{display:flex;gap:7px;flex-wrap:wrap}
-.list{display:grid;gap:8px}.item{padding:11px;border:1px solid var(--line);border-radius:14px;background:#fff}.itemTop{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}.item strong{color:var(--wine)}.meta{font-size:10px;color:var(--muted);line-height:1.45;margin-top:3px}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f5dee1;color:#89505a;font-size:9px;font-weight:900}.badge.ok{background:#e3f0e8;color:#2e7358}.badge.warn{background:#fff0d9;color:#8a652c}.badge.bad{background:#f9e0e2;color:#a24750}.favorite{border:0;background:transparent;font-size:20px;color:#d8a0a5}.favorite.on{color:#b85d68}.empty{text-align:center;color:#9a8588;padding:20px 8px;font-size:11px}
-.builderRow{display:grid;grid-template-columns:minmax(0,1fr) 66px 82px 34px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px dashed #eadbda}.builderRow:last-child{border-bottom:0}.builderRow input{height:38px;border:1px solid #e1cece;border-radius:9px;padding:0 7px}.remove{width:34px;height:34px;border:0;border-radius:9px;background:#fff0f0;color:#ae444d;font-weight:900}
-.summary{background:linear-gradient(145deg,#713f47,#512d33);color:#fff;border-radius:17px;padding:12px}.sumRow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;color:#f1dddf;font-size:11px}.sumRow.total{margin-top:6px;padding-top:9px;border-top:1px solid rgba(255,255,255,.16);font-size:16px;color:#fff4d9;font-weight:900}.safe{margin-top:9px;padding:9px;border-radius:11px;font-size:10px;font-weight:900}.safe.ok{background:#e4f0e8;color:#376d50}.safe.warn{background:#fff0d9;color:#856127}.safe.bad{background:#f9e0e2;color:#9a4049}
-.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:11px;background:#fff;border:1px solid var(--line);border-radius:14px}.kpi small{display:block;color:#8f777a;font-size:8px;font-weight:900;letter-spacing:.5px;text-transform:uppercase}.kpi strong{display:block;margin-top:4px;color:var(--wine);font-size:17px}.linkBox{display:flex;gap:8px;align-items:center;padding:10px;border-radius:13px;background:#fff0ee;border:1px solid #ecd6d5;color:#764b51;word-break:break-all;font-size:10px}
-.bottomNav{position:fixed!important;z-index:1000;left:0!important;right:0!important;bottom:0!important;top:auto!important;max-width:850px;width:100%;margin:auto;height:calc(70px + env(safe-area-inset-bottom));padding:6px 5px env(safe-area-inset-bottom);background:linear-gradient(145deg,#713f47,#512d33);display:grid;grid-template-columns:repeat(4,1fr);border-radius:22px 22px 0 0;box-shadow:0 -8px 28px rgba(78,43,49,.22)}.navBtn{border:0;background:transparent;color:#ddc2c5;border-radius:12px;font-size:8px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.navBtn span:first-child{font-size:18px}.navBtn.active{background:rgba(255,255,255,.09);color:#fff0c7}
-.modal{display:none;position:fixed;z-index:300;inset:0;background:rgba(64,39,43,.55);padding:12px;align-items:flex-end;justify-content:center}.modal.show{display:flex}.modalBox{width:min(100%,580px);max-height:88vh;overflow:auto;background:#fffaf7;border-radius:22px;padding:14px}.modalHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.modalHead h3{margin:0;color:var(--wine);font-family:Georgia,serif}.close{width:36px;height:36px;border:0;border-radius:10px;background:#fae7e8;color:#7b4650}.toast{position:fixed;z-index:500;left:50%;bottom:86px;transform:translate(-50%,16px);width:min(92%,500px);padding:11px;background:#512d33;color:#fff;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;font-size:11px}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:620px){.grid2,.grid3{grid-template-columns:1fr}.brand h1{font-size:20px}.brand img{width:61px;height:61px}.content{padding:11px}.pageTitle{align-items:flex-start;flex-direction:column}.pageTitle>.btn{width:100%}.builderRow{grid-template-columns:minmax(0,1fr) 58px 73px 32px}.kpis{grid-template-columns:1fr 1fr}.bottomNav{height:calc(68px + env(safe-area-inset-bottom))}}@media(min-width:700px){.kpis{grid-template-columns:repeat(4,1fr)}.modal{align-items:center}}
+:root{
+ --rose:#c9787b;--roseDark:#a95860;--roseSoft:#f5d9d8;--rosePale:#fff0ed;
+ --cream:#fffaf7;--paper:#fffdfb;--wine:#6e3c43;--ink:#4b3b3e;--muted:#8f7b7e;
+ --line:#efdeda;--gold:#c79b66;--shadow:0 12px 32px rgba(130,82,86,.10)
+}
+*{box-sizing:border-box}html{background:#f7e7e2}body{margin:0;min-height:100vh;background:
+radial-gradient(circle at 10% 0,#f2c9c5 0,transparent 22rem),
+radial-gradient(circle at 100% 10%,#f6d8d3 0,transparent 22rem),
+linear-gradient(180deg,#f9e7e2,#fff8f4 36%,#fffaf7);
+color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(100%,620px);margin:auto;min-height:100vh;padding-bottom:87px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px}.topIcon{border:0;background:transparent;color:var(--wine);font-size:22px;width:38px;height:38px}.miniLogo{height:72px;display:flex;align-items:center;justify-content:center}.miniLogo img{width:170px;max-height:72px;object-fit:contain}
+.content{padding:0 15px 18px}.screen{display:none}.screen.active{display:block;animation:fade .18s ease}@keyframes fade{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:none}}
+.profile{display:flex;align-items:center;gap:12px;margin:4px 0 16px}.avatar{width:64px;height:64px;border-radius:50%;overflow:hidden;background:linear-gradient(145deg,#f4c7c5,#c97c82);border:3px solid #fff;box-shadow:0 7px 20px rgba(121,75,80,.14)}.avatar img{width:100%;height:100%;object-fit:cover}.hello h1{font-family:Georgia,serif;color:var(--wine);font-size:25px;margin:0}.hello p{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.35}
+.homeGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.homeCard{background:rgba(255,255,255,.90);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:var(--shadow)}.homeLabel{display:flex;align-items:center;gap:6px;color:#8e4d55;font-size:11px;font-weight:800}.homeBig{font-family:Georgia,serif;color:var(--wine);font-size:38px;line-height:1;margin:12px 0 4px}.homeCard strong{display:block;color:#5e4146;font-size:14px;margin-top:10px}.homeCard small{font-size:10px;color:var(--muted)}.linkText{font-size:10px;color:var(--roseDark);font-weight:800;margin-top:8px}
+.bigAction{width:100%;min-height:56px;border:0;border-radius:17px;margin-top:11px;background:linear-gradient(135deg,#d99293,#bf6d72);color:#fff;font-family:Georgia,serif;font-size:17px;box-shadow:0 10px 24px rgba(191,109,114,.19)}
+.featureCard{display:flex;align-items:center;gap:12px;margin-top:11px;padding:16px;border-radius:18px;background:linear-gradient(135deg,#fff2ef,#f7d3d1);border:1px solid #efcfcc;box-shadow:var(--shadow)}.featureIcon{font-size:30px}.featureCard h3{margin:0;color:var(--wine);font-family:Georgia,serif;font-size:18px}.featureCard p{margin:4px 0 0;color:#936f72;font-size:11px}.featureArrow{margin-left:auto;color:var(--roseDark);font-size:22px}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:17px 2px 9px}.sectionHead h3{margin:0;color:var(--wine);font-family:Georgia,serif;font-size:18px}.sectionHead button{border:0;background:transparent;color:var(--roseDark);font-size:11px;font-weight:800}
+.favorites{display:flex;gap:12px;overflow-x:auto;padding:2px 1px 6px;scrollbar-width:none}.favorites::-webkit-scrollbar{display:none}.favPerson{min-width:64px;text-align:center}.favAvatar{width:52px;height:52px;border-radius:50%;margin:auto;background:linear-gradient(145deg,#eab1ad,#bd6e75);display:grid;place-items:center;color:#fff;font-weight:900;border:2px solid #fff;box-shadow:0 6px 16px rgba(124,76,81,.13)}.favPerson span{display:block;margin-top:5px;font-size:9px;color:#654b4f;line-height:1.2}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:19px;padding:14px;margin-bottom:11px;box-shadow:var(--shadow)}.pageTitle{display:flex;align-items:center;justify-content:space-between;margin:5px 0 14px}.pageTitle h2{margin:0;font-family:Georgia,serif;font-size:23px;color:var(--wine)}.pageTitle p{margin:4px 0 0;font-size:11px;color:var(--muted)}.backBtn{border:0;background:transparent;color:var(--wine);font-size:23px}
+.stepTitle{display:flex;align-items:center;gap:9px;color:#5f4247;font-weight:800;font-size:13px;margin-bottom:9px}.stepBubble{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#e79999;color:white;font-size:11px;font-weight:900}
+.field{margin-bottom:9px}.field label{display:block;margin-bottom:4px;font-size:9px;font-weight:900;letter-spacing:.45px;text-transform:uppercase;color:#8c777a}.input{width:100%;min-height:43px;border:1px solid #e7d8d5;border-radius:12px;padding:9px 11px;background:#fff;color:var(--ink);outline:none}.input:focus{border-color:#d28e8f;box-shadow:0 0 0 3px rgba(210,142,143,.11)}textarea.input{min-height:76px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.btn{border:0;border-radius:13px;min-height:43px;padding:0 13px;font-weight:900}.btn.primary{background:linear-gradient(135deg,#d17f82,#b96369);color:#fff}.btn.secondary{background:#fae9e7;color:#824850;border:1px solid #efd3d0}.btn.gold{background:#f0dcc0;color:#654b2e;border:1px solid #e0c59b}.btn.green{background:#e7f2eb;color:#356f56}.btn.danger{background:#fff0ef;color:#a84f55}.btn.full{width:100%}.btn.sm{min-height:34px;font-size:10px}
+.notice{padding:10px;border-radius:12px;background:#fff4e4;border:1px solid #efd8af;color:#765d3d;font-size:10px;line-height:1.45}.sectionTitle{font-size:10px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;color:#965a61;margin-bottom:9px}.list{display:grid;gap:8px}.item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px}.itemTop{display:flex;justify-content:space-between;gap:8px}.item strong{color:var(--wine)}.meta{font-size:10px;color:var(--muted);line-height:1.45;margin-top:3px}.badge{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f6e0e0;color:#8a4d54;font-size:9px;font-weight:900}.badge.ok{background:#e4f0e8;color:#3d765b}.badge.warn{background:#fff0d8;color:#886328}.badge.bad{background:#f9dfe0;color:#9f434a}
+.builderRow{display:grid;grid-template-columns:minmax(0,1fr) 58px 74px 32px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px dashed #eadbd8}.builderRow input{height:37px;border:1px solid #e1d1cf;border-radius:9px;padding:0 6px}.remove{width:32px;height:32px;border:0;border-radius:9px;background:#fff0ef;color:#a94b52}
+.summary{background:#fff5f2;border:1px solid #eed7d3;border-radius:15px;padding:12px}.sumRow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;font-size:11px;color:#725b5f}.sumRow.total{font-size:17px;color:#a34f57;font-family:Georgia,serif;border-top:1px solid #ecd7d4;padding-top:9px;margin-top:5px}.safe{margin-top:9px;padding:9px;border-radius:11px;font-size:10px;font-weight:800}.safe.ok{background:#e6f1e9;color:#3e7158}.safe.warn{background:#fff1d8;color:#866229}.safe.bad{background:#fae1e2;color:#9c4148}
+.agendaTabs{display:grid;grid-template-columns:1fr 1fr;background:#f8ece9;border-radius:13px;padding:4px;margin-bottom:12px}.agendaTab{border:0;border-radius:10px;min-height:38px;background:transparent;color:#765c60;font-size:11px;font-weight:800}.agendaTab.active{background:#d88587;color:#fff;box-shadow:0 4px 12px rgba(184,94,99,.18)}.agendaPanel{display:none}.agendaPanel.active{display:block}.bookingHero{text-align:center;padding:18px 12px;border-radius:19px;background:linear-gradient(145deg,#fff4f1,#f7dcda);border:1px solid #efd6d1;margin-bottom:12px}.bookingHero img{width:130px;height:70px;object-fit:contain}.bookingHero h3{font-family:Georgia,serif;color:var(--wine);font-size:21px;margin:7px 0 4px}.bookingHero p{font-size:10px;color:#8b6d70;margin:0}.linkBox{display:flex;align-items:center;gap:8px;padding:11px;border-radius:12px;background:#fff;border:1px solid #ead7d3;font-size:10px;color:#765358;word-break:break-all}.timeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.timeChip{min-height:37px;border:1px solid #ead8d5;border-radius:10px;background:#fff;color:#70565a;font-size:10px}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px}.kpi small{display:block;color:#8e787b;font-size:8px;font-weight:900;text-transform:uppercase}.kpi strong{display:block;color:var(--wine);font-size:17px;margin-top:4px}
+.favorite{border:0;background:transparent;font-size:20px;color:#d49a9f}.favorite.on{color:#b65c64}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.empty{text-align:center;color:#998588;padding:18px 8px;font-size:11px}
+.bottomNav{position:fixed!important;z-index:1000;left:0!important;right:0!important;bottom:0!important;top:auto!important;width:min(100%,620px);height:calc(69px + env(safe-area-inset-bottom));margin:auto;padding:6px 6px env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,252,249,.97);border-top:1px solid #ecd9d5;box-shadow:0 -8px 24px rgba(126,79,83,.11)}.navBtn{border:0;background:transparent;color:#786568;border-radius:13px;font-size:9px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.navBtn span:first-child{font-size:18px}.navBtn.active{color:#b6555e}.modal{display:none;position:fixed;z-index:300;inset:0;background:rgba(83,55,59,.48);padding:12px;align-items:flex-end;justify-content:center}.modal.show{display:flex}.modalBox{width:min(100%,560px);max-height:88vh;overflow:auto;background:#fffaf7;border-radius:22px;padding:14px}.modalHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.modalHead h3{margin:0;color:var(--wine);font-family:Georgia,serif}.close{width:36px;height:36px;border:0;border-radius:10px;background:#fae7e5;color:#7b4650}.toast{position:fixed;z-index:500;left:50%;bottom:84px;transform:translate(-50%,16px);width:min(92%,500px);padding:11px;background:#6a3d44;color:#fff;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;font-size:11px}.toast.show{opacity:1;transform:translate(-50%,0)}.installBtn{display:none}
+@media(max-width:520px){.grid2,.grid3{grid-template-columns:1fr}.miniLogo img{width:150px}.hello h1{font-size:23px}.timeGrid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="hero">
- <div class="brand">
-  <img alt="Loyara Lobo" src="icon.svg">
-  <div><h1>Esteticista Loyara Lobo</h1><p>Estética e Cosmética</p></div>
-  <button id="installBtn" class="installBtn">Instalar app</button>
- </div>
- <div class="welcome"><b>Olá, Loyara ♡</b><span>Vamos organizar o dia e cuidar das suas clientes.</span></div>
- <div class="heroStats">
-  <div class="heroStat"><small>Agenda hoje</small><strong id="heroToday">0</strong></div>
-  <div class="heroStat"><small>Próxima cliente</small><strong id="heroNext">Livre</strong></div>
-  <div class="heroStat"><small>A receber</small><strong id="heroPending">R$ 0,00</strong></div>
- </div>
-</header>
+<div class="topbar"><button class="topIcon">☰</button><div></div><button class="topIcon">♧</button></div>
+<div class="miniLogo"><img src="icon.svg" alt="Loyara Lobo"></div>
+
 <main class="content">
- <section id="screen-clients" class="screen">
-  <div class="pageTitle"><div><h2>Clientes</h2><p>Favoritos, histórico e mensagens.</p></div><button class="btn primary" data-open="clientModal">+ Nova cliente</button></div>
-  <div class="card soft">
-   <div class="sectionTitle">Clientes favoritos ♡</div>
-   <div id="favoriteClients" class="list"></div>
-  </div>
-  <div class="card"><div class="field"><label>Buscar cliente</label><input id="clientSearch" class="input" placeholder="Nome ou telefone"></div><div id="clientList" class="list"></div></div>
- </section>
+<section id="screen-clients" class="screen active">
+ <div class="profile">
+  <div class="avatar"><img src="icon.svg" alt="Loyara"></div>
+  <div class="hello"><h1>Olá, Loyara</h1><p>Que bom te ver por aqui!<br>Vamos fazer um dia incrível?</p></div>
+ </div>
+ <div class="homeGrid">
+  <div class="homeCard"><div class="homeLabel">▣ Agenda de hoje</div><div class="homeBig" id="heroToday">0</div><small>atendimentos</small><div class="linkText" id="goAgendaHome">Ver agenda →</div></div>
+  <div class="homeCard"><div class="homeLabel">♙ Próxima cliente</div><strong id="heroNext">Livre</strong><small id="heroNextProc">Nenhum horário próximo</small><div class="linkText">Ver detalhes →</div></div>
+ </div>
+ <button class="bigAction" id="goPackageHome">⊕ &nbsp; Novo pacote</button>
+ <div class="featureCard" id="goBookingHome"><div class="featureIcon">🔗</div><div><h3>Meu link de agendamento</h3><p>Compartilhe e deixe suas clientes agendarem online</p></div><div class="featureArrow">›</div></div>
+ <div class="sectionHead"><h3>Clientes favoritos</h3><button id="showAllClients">Ver todos →</button></div>
+ <div id="favoriteClients" class="favorites"></div>
 
- <section id="screen-packages" class="screen active">
-  <div class="pageTitle"><div><h2>Montar Pacote</h2><p>Sessões, desconto inteligente e preço mínimo seguro.</p></div><button class="btn secondary" data-open="procedureModal">Procedimentos</button></div>
-  <div class="card soft">
-   <div class="sectionTitle">Adicionar procedimento que você faz</div>
-   <div class="notice">Ela informa o <b>preço avulso</b> e o <b>menor valor que aceita por sessão</b>. O app usa isso para impedir desconto exagerado. Isso é um limite comercial, não um cálculo de lucro real.</div>
-   <div class="grid3">
-    <div class="field"><label>Nome</label><input id="quickProcName" class="input" placeholder="Ex.: Microagulhamento"></div>
-    <div class="field"><label>Preço avulso</label><input id="quickProcPrice" class="input" type="number" min="0" step="0.01" placeholder="150,00"></div>
-    <div class="field"><label>Menor valor seguro</label><input id="quickProcMin" class="input" type="number" min="0" step="0.01" placeholder="120,00"></div>
-   </div>
-   <div class="grid2"><div class="field"><label>Duração (min)</label><input id="quickProcDuration" class="input" type="number" min="15" value="60"></div><div class="field"><label>Observação</label><input id="quickProcNotes" class="input" placeholder="Opcional"></div></div>
-   <button id="quickAddProcedure" class="btn primary full">+ Adicionar procedimento</button>
-  </div>
-  <div class="card">
-   <div class="sectionTitle">1. Cliente e nome do pacote</div>
-   <div class="grid2"><div class="field"><label>Cliente</label><select id="packageClient" class="input"></select></div><div class="field"><label>Nome do pacote</label><input id="packageName" class="input" placeholder="Ex.: Corpo Renovado"></div></div>
-  </div>
-  <div class="card">
-   <div class="sectionTitle">2. Procedimentos e sessões</div>
-   <div class="grid2"><div class="field"><label>Procedimento</label><select id="builderProcedure" class="input"></select></div><div class="field"><label>Quantidade de sessões</label><input id="builderSessions" class="input" type="number" min="1" value="1"></div></div>
-   <button id="addBuilder" class="btn gold full">+ Adicionar ao pacote</button>
-   <div id="builderList" style="margin-top:8px"></div>
-  </div>
-  <div class="card">
-   <div class="sectionTitle">3. Desconto e pagamento</div>
-   <div class="grid3"><div class="field"><label>Desconto (%)</label><input id="packageDiscount" class="input" type="number" min="0" max="100" value="0"></div><div class="field"><label>Parcelas</label><select id="packageInstallments" class="input"></select></div><div class="field"><label>Validade (dias)</label><input id="packageValidity" class="input" type="number" min="1" value="90"></div></div>
-   <div id="packageSummary" class="summary"></div><div id="safeBox" class="safe ok"></div>
-  </div>
-  <div class="actions"><button id="savePackage" class="btn primary">Salvar pacote</button><button id="copyProposal" class="btn secondary">Copiar proposta</button><button id="sendProposal" class="btn gold">Enviar no WhatsApp</button></div>
-  <div class="card" style="margin-top:11px"><div class="sectionTitle">Pacotes salvos</div><div id="packageList" class="list"></div></div>
- </section>
+ <div class="card" id="allClientsCard" style="margin-top:13px">
+  <div class="sectionHead" style="margin-top:0"><h3>Todas as clientes</h3><button data-open="clientModal">+ Adicionar</button></div>
+  <div class="field"><input id="clientSearch" class="input" placeholder="Buscar cliente ou telefone"></div>
+  <div id="clientList" class="list"></div>
+ </div>
+</section>
 
- <section id="screen-agenda" class="screen">
-  <div class="pageTitle"><div><h2>Agenda</h2><p>Atendimentos e lembretes pelo WhatsApp.</p></div><button class="btn primary" data-open="appointmentModal">+ Agendar</button></div>
-  <div class="card soft">
-   <div class="sectionTitle">Meu link de agendamento</div>
-   <div class="notice">Este é o espaço do link que a cliente vai abrir para escolher o melhor horário. Para funcionar entre celulares e bloquear horários automaticamente, vamos ligar esta tela à nuvem.</div>
-   <div class="linkBox"><span>🔗</span><span id="bookingLink"></span></div>
-   <button id="copyBookingLink" class="btn secondary full" style="margin-top:9px">Copiar link</button>
-  </div>
-  <div class="card"><div class="sectionTitle">Atendimentos</div><div id="agendaList" class="list"></div></div>
- </section>
+<section id="screen-packages" class="screen">
+ <div class="pageTitle"><div><h2>Montar Pacote</h2><p>Crie um pacote bonito e seguro para a cliente.</p></div><button class="btn secondary" data-open="procedureModal">Procedimentos</button></div>
+ <div class="card">
+  <div class="stepTitle"><span class="stepBubble">1</span> Selecione a cliente</div>
+  <select id="packageClient" class="input"></select>
+ </div>
+ <div class="card">
+  <div class="stepTitle"><span class="stepBubble">2</span> Escolha os procedimentos</div>
+  <div class="grid2"><select id="builderProcedure" class="input"></select><input id="builderSessions" class="input" type="number" min="1" value="1" placeholder="Sessões"></div>
+  <button id="addBuilder" class="btn secondary full" style="margin-top:8px">+ Adicionar procedimento</button>
+  <div id="builderList" style="margin-top:8px"></div>
+ </div>
+ <div class="card">
+  <div class="stepTitle"><span class="stepBubble">3</span> Número de sessões</div>
+  <div class="notice">Você pode ajustar a quantidade de sessões de cada procedimento diretamente na lista acima.</div>
+ </div>
+ <div class="card">
+  <div class="stepTitle"><span class="stepBubble">4</span> Desconto (opcional)</div>
+  <div class="grid2"><div class="field"><label>Desconto (%)</label><input id="packageDiscount" class="input" type="number" min="0" max="100" value="0"></div><div class="field"><label>Validade (dias)</label><input id="packageValidity" class="input" type="number" value="90"></div></div>
+ </div>
+ <div class="card">
+  <div class="stepTitle"><span class="stepBubble">5</span> Parcelamento</div>
+  <div class="grid2"><select id="packageInstallments" class="input"></select><input id="packageName" class="input" placeholder="Nome do pacote"></div>
+  <div id="packageSummary" class="summary" style="margin-top:10px"></div>
+  <div id="safeBox" class="safe ok"></div>
+ </div>
+ <div class="actions"><button id="savePackage" class="btn primary">Salvar pacote</button><button id="copyProposal" class="btn secondary">Copiar proposta</button><button id="sendProposal" class="btn gold">WhatsApp</button></div>
+ <div class="card" style="margin-top:12px"><div class="sectionTitle">Pacotes salvos</div><div id="packageList" class="list"></div></div>
 
- <section id="screen-finance" class="screen">
-  <div class="pageTitle"><div><h2>Financeiro</h2><p>Simples: faturamento, recebido e a receber.</p></div></div>
-  <div id="financeKpis" class="kpis"></div>
-  <div class="card" style="margin-top:11px"><div class="sectionTitle">Pacotes e pagamentos</div><div id="financePackages" class="list"></div></div>
- </section>
+ <div class="card">
+  <div class="sectionTitle">Adicionar procedimento que você faz</div>
+  <div class="notice">Cadastre preço avulso e menor valor seguro por sessão. O app avisa quando o desconto passa desse limite.</div>
+  <div class="grid3"><div class="field"><label>Nome</label><input id="quickProcName" class="input"></div><div class="field"><label>Preço avulso</label><input id="quickProcPrice" class="input" type="number"></div><div class="field"><label>Menor valor seguro</label><input id="quickProcMin" class="input" type="number"></div></div>
+  <div class="grid2"><div class="field"><label>Duração (min)</label><input id="quickProcDuration" class="input" type="number" value="60"></div><div class="field"><label>Observação</label><input id="quickProcNotes" class="input"></div></div>
+  <button id="quickAddProcedure" class="btn primary full">+ Adicionar procedimento</button>
+ </div>
+</section>
+
+<section id="screen-agenda" class="screen">
+ <div class="pageTitle"><div><h2>Agendamento</h2><p>Organize a agenda e o link para suas clientes.</p></div><button class="btn primary" data-open="appointmentModal">+ Agendar</button></div>
+ <div class="agendaTabs"><button id="agendaTabMine" class="agendaTab active">Minha agenda</button><button id="agendaTabLink" class="agendaTab">Link de agendamento</button></div>
+ <div id="agendaMine" class="agendaPanel active"><div class="card"><div id="agendaList" class="list"></div></div></div>
+ <div id="agendaLinkPanel" class="agendaPanel">
+  <div class="bookingHero"><img src="icon.svg" alt=""><h3>Escolha seu melhor horário</h3><p>Agende seu momento de cuidado de forma rápida e prática.</p></div>
+  <div class="card">
+   <div class="stepTitle"><span class="stepBubble">1</span> Procedimento</div>
+   <select class="input"><option>Selecione um procedimento</option></select>
+   <div class="stepTitle" style="margin-top:12px"><span class="stepBubble">2</span> Data e horário</div>
+   <input class="input" type="date">
+   <div class="timeGrid"><button class="timeChip">08:00</button><button class="timeChip">08:30</button><button class="timeChip">09:00</button><button class="timeChip">09:30</button><button class="timeChip">10:00</button><button class="timeChip">10:30</button><button class="timeChip">11:00</button><button class="timeChip">11:30</button><button class="timeChip">13:00</button><button class="timeChip">13:30</button><button class="timeChip">14:00</button><button class="timeChip">14:30</button></div>
+  </div>
+  <div class="card"><div class="sectionTitle">Seu link de agendamento</div><div class="linkBox">🔗 <span id="bookingLink"></span></div><button id="copyBookingLink" class="btn primary full" style="margin-top:8px">Compartilhar link</button></div>
+ </div>
+</section>
+
+<section id="screen-finance" class="screen">
+ <div class="pageTitle"><div><h2>Financeiro</h2><p>Somente o que importa: faturamento, recebido e a receber.</p></div></div>
+ <div id="financeKpis" class="kpis"></div>
+ <div class="card" style="margin-top:11px"><div class="sectionTitle">Pacotes e recebimentos</div><div id="financePackages" class="list"></div></div>
+</section>
 </main>
 </div>
 
 <nav class="bottomNav">
- <button class="navBtn" data-screen="clients"><span>♡</span><span>Clientes</span></button>
- <button class="navBtn active" data-screen="packages"><span>✦</span><span>Pacotes</span></button>
- <button class="navBtn" data-screen="agenda"><span>◷</span><span>Agenda</span></button>
- <button class="navBtn" data-screen="finance"><span>◈</span><span>Financeiro</span></button>
+ <button class="navBtn active" data-screen="clients"><span>♙</span><span>Clientes</span></button>
+ <button class="navBtn" data-screen="packages"><span>◇</span><span>Pacotes</span></button>
+ <button class="navBtn" data-screen="agenda"><span>▣</span><span>Agenda</span></button>
+ <button class="navBtn" data-screen="finance"><span>▥</span><span>Financeiro</span></button>
 </nav>
 
-<div id="clientModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Nova cliente</h3><button class="close" data-close="clientModal">×</button></div><div class="field"><label>Nome</label><input id="clientName" class="input"></div><div class="field"><label>WhatsApp</label><input id="clientPhone" class="input" inputmode="tel"></div><div class="field"><label>Observações</label><textarea id="clientNotes" class="input"></textarea></div><label class="notice" style="display:block"><input id="clientFavorite" type="checkbox"> Marcar como cliente favorita ♡</label><button id="saveClient" class="btn primary full" style="margin-top:9px">Salvar cliente</button></div></div>
+<div id="clientModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Nova cliente</h3><button class="close" data-close="clientModal">×</button></div><div class="field"><label>Nome</label><input id="clientName" class="input"></div><div class="field"><label>WhatsApp</label><input id="clientPhone" class="input"></div><div class="field"><label>Observações</label><textarea id="clientNotes" class="input"></textarea></div><label class="notice" style="display:block"><input id="clientFavorite" type="checkbox"> Marcar como cliente favorita ♡</label><button id="saveClient" class="btn primary full" style="margin-top:8px">Salvar cliente</button></div></div>
 
 <div id="procedureModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Meus procedimentos</h3><button class="close" data-close="procedureModal">×</button></div><div id="procedureList" class="list"></div></div></div>
 
 <div id="appointmentModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Novo agendamento</h3><button class="close" data-close="appointmentModal">×</button></div><div class="field"><label>Cliente</label><select id="apptClient" class="input"></select></div><div class="field"><label>Procedimento</label><select id="apptProcedure" class="input"></select></div><div class="grid2"><div class="field"><label>Data</label><input id="apptDate" class="input" type="date"></div><div class="field"><label>Hora</label><input id="apptTime" class="input" type="time"></div></div><button id="saveAppointment" class="btn primary full">Salvar agendamento</button></div></div>
 
-<div id="paymentModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Atualizar recebimento</h3><button class="close" data-close="paymentModal">×</button></div><input id="paymentPackageId" type="hidden"><div class="field"><label>Total recebido até agora</label><input id="paymentAmount" class="input" type="number" min="0" step="0.01"></div><button id="savePayment" class="btn primary full">Salvar recebimento</button></div></div>
+<div id="paymentModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Atualizar recebimento</h3><button class="close" data-close="paymentModal">×</button></div><input id="paymentPackageId" type="hidden"><div class="field"><label>Total recebido até agora</label><input id="paymentAmount" class="input" type="number"></div><button id="savePayment" class="btn primary full">Salvar recebimento</button></div></div>
 
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
