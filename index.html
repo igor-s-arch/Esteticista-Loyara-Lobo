@@ -43,37 +43,58 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 .bottomNav{position:fixed!important;z-index:1000;left:0!important;right:0!important;bottom:0!important;top:auto!important;width:min(100%,620px);height:calc(72px + env(safe-area-inset-bottom));margin:auto;padding:6px 8px env(safe-area-inset-bottom);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,252,249,.98);border-top:1px solid #ead8d4;box-shadow:0 -10px 28px rgba(126,79,83,.10)}.navBtn{border:0;background:transparent;color:#89777a;border-radius:14px;font-size:9px;font-weight:750;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:.18s}.navBtn svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}.navBtn.active{color:#b7545c;background:#fff4f1}.navBtn.active svg{stroke-width:2.1}.modal{display:none;position:fixed;z-index:300;inset:0;background:rgba(83,55,59,.48);padding:12px;align-items:flex-end;justify-content:center}.modal.show{display:flex}.modalBox{width:min(100%,560px);max-height:88vh;overflow:auto;background:#fffaf7;border-radius:22px;padding:14px}.modalHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.modalHead h3{margin:0;color:var(--wine);font-family:Georgia,serif}.close{width:36px;height:36px;border:0;border-radius:10px;background:#fae7e5;color:#7b4650}.toast{position:fixed;z-index:500;left:50%;bottom:84px;transform:translate(-50%,16px);width:min(92%,500px);padding:11px;background:#6a3d44;color:#fff;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;font-size:11px}.toast.show{opacity:1;transform:translate(-50%,0)}.installBtn{display:none}
 @media(max-width:520px){.grid2,.grid3{grid-template-columns:1fr}.hello h1{font-size:23px}.timeGrid{grid-template-columns:repeat(4,1fr)}}
 
-/* Organização visual por cores: cada área tem uma cor-guia consistente */
-:root{--clients-color:#b85f79;--packages-color:#bd8a36;--procedures-color:#7d68b5;--schedule-color:#3f8b82;--finance-color:#4380b7}
-.navBtn[data-screen="clients"]{--nav-color:var(--clients-color)}
-.navBtn[data-screen="packages"]{--nav-color:var(--packages-color)}
-.navBtn[data-screen="procedures"]{--nav-color:var(--procedures-color)}
-.navBtn[data-screen="appointments"]{--nav-color:var(--schedule-color)}
-.navBtn[data-screen="finance"]{--nav-color:var(--finance-color)}
-.navBtn{border:1px solid transparent}
-.navBtn.active{color:var(--nav-color,#b7545c);background:color-mix(in srgb,var(--nav-color,#b7545c) 12%,white);border-color:color-mix(in srgb,var(--nav-color,#b7545c) 20%,white)}
-.navBtn.active svg{stroke:currentColor}
-#screen-clients .pageTitle h2{color:var(--clients-color)}
-#screen-packages .pageTitle h2{color:var(--packages-color)}
-#screen-procedures .pageTitle h2{color:var(--procedures-color)}
-#screen-appointments .pageTitle h2{color:var(--schedule-color)}
-#screen-finance .pageTitle h2{color:var(--finance-color)}
-#screen-clients .sectionTitle:before,#screen-packages .sectionTitle:before,#screen-procedures .sectionTitle:before,#screen-appointments .sectionTitle:before,#screen-finance .sectionTitle:before{content:"";display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:7px;background:var(--section-color,#b85f79)}
-#screen-clients{--section-color:var(--clients-color)}
-#screen-packages{--section-color:var(--packages-color)}
-#screen-procedures{--section-color:var(--procedures-color)}
-#screen-appointments{--section-color:var(--schedule-color)}
-#screen-finance{--section-color:var(--finance-color)}
-.status,.badge{border-radius:999px;padding:4px 8px;font-weight:800}
-.status.done,.badge.done,.paid{background:#dff5e7!important;color:#237545!important}
-.status.pending,.badge.pending,.unpaid{background:#fff0c7!important;color:#8b6209!important}
-.status.cancelled,.badge.cancelled{background:#ffe2e3!important;color:#a63842!important}
-.btn.primary{background:linear-gradient(135deg,#c97986,#ad526a);color:white}
-#screen-finance .btn.primary{background:linear-gradient(135deg,#5796ca,#3473a8)}
-#screen-packages .btn.primary{background:linear-gradient(135deg,#d5a64e,#b7832c)}
-#screen-procedures .btn.primary{background:linear-gradient(135deg,#a08ad2,#7560ad)}
-#screen-appointments .btn.primary{background:linear-gradient(135deg,#65a99f,#3f8278)}
+/* Cores de orientação: cada área mantém sua cor em títulos, cartões e botões */
+:root{
+ --clients-color:#c14f78;--clients-soft:#fff0f5;
+ --packages-color:#946100;--packages-soft:#fff5dc;
+ --procedures-color:#7052b5;--procedures-soft:#f2edff;
+ --schedule-color:#147d73;--schedule-soft:#e7f7f3;
+ --finance-color:#2866a8;--finance-soft:#eaf3ff;
+ --success-color:#237747;--success-soft:#e2f5e8;
+ --pending-color:#8a6100;--pending-soft:#fff1c4;
+ --danger-color:#b52e3a;--danger-soft:#ffe7e8;
+}
+.navBtn{border:1px solid transparent;transition:background .18s,color .18s,border-color .18s}
+.navBtn[data-screen="clients"]{--nav-color:var(--clients-color);--nav-soft:var(--clients-soft)}
+.navBtn[data-screen="packages"]{--nav-color:var(--packages-color);--nav-soft:var(--packages-soft)}
+.navBtn[data-screen="agenda"]{--nav-color:var(--schedule-color);--nav-soft:var(--schedule-soft)}
+.navBtn[data-screen="finance"]{--nav-color:var(--finance-color);--nav-soft:var(--finance-soft)}
+.navBtn.active{color:var(--nav-color,#b7545c);background:var(--nav-soft,#fff4f1);border-color:var(--nav-color,#b7545c);box-shadow:inset 0 -3px 0 var(--nav-color,#b7545c)}
+.navBtn.active svg{stroke:currentColor;stroke-width:2.2}
+.screen{--section-color:var(--clients-color);--section-soft:var(--clients-soft)}
+#screen-clients{--section-color:var(--clients-color);--section-soft:var(--clients-soft)}
+#screen-packages{--section-color:var(--packages-color);--section-soft:var(--packages-soft)}
+#screen-agenda{--section-color:var(--schedule-color);--section-soft:var(--schedule-soft)}
+#screen-finance{--section-color:var(--finance-color);--section-soft:var(--finance-soft)}
+.screen .pageTitle h2,.screen .sectionTitle,.screen .sectionHead h3{color:var(--section-color)}
+.screen .sectionTitle:before{content:"";display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:7px;background:var(--section-color);vertical-align:1px}
+.screen .card{border-left:4px solid var(--section-color);box-shadow:0 7px 18px rgba(77,52,55,.06)}
+.screen .stepBubble{background:var(--section-color)}
+.screen .input:focus{border-color:var(--section-color);box-shadow:0 0 0 3px var(--section-soft)}
+.screen .btn.primary{background:var(--section-color);color:#fff;box-shadow:0 4px 10px rgba(40,45,50,.08)}
+.screen .btn.secondary{background:var(--section-soft);color:var(--section-color);border:1px solid color-mix(in srgb,var(--section-color) 28%,white)}
+#screen-clients .homeCard{border-top:4px solid var(--clients-color)}
+#screen-packages .summary{background:var(--packages-soft);border-color:#ead6a4}
+#screen-packages .sumRow.total{color:var(--packages-color);border-color:#ead6a4}
+#screen-packages [data-open="procedureModal"],#screen-packages #quickAddProcedure{background:var(--procedures-soft);color:var(--procedures-color);border:1px solid #d8caf8}
+#screen-agenda .agendaTabs{background:var(--schedule-soft)}
+#screen-agenda .agendaTab{color:var(--schedule-color)}
+#screen-agenda .agendaTab.active{background:var(--schedule-color);color:#fff;box-shadow:0 4px 12px rgba(20,125,115,.18)}
+#screen-agenda .timeChip.free{background:var(--schedule-soft);color:var(--schedule-color);border-color:#b9e3da}
+#screen-agenda .timeChip.occupied{background:var(--danger-soft);color:var(--danger-color);border-color:#f3c1c5}
+#screen-finance .kpi{border-top:3px solid var(--finance-color);background:linear-gradient(180deg,var(--finance-soft),#fff 48%)}
+#screen-finance .kpi strong{color:var(--finance-color)}
+#procedureModal .modalBox{border-top:5px solid var(--procedures-color)}
+#procedureModal .modalHead h3{color:var(--procedures-color)}
+.status,.badge{border-radius:999px;padding:5px 9px;font-weight:850}
+.status.done,.badge.done,.paid,.badge.ok{background:var(--success-soft)!important;color:var(--success-color)!important}
+.status.pending,.badge.pending,.unpaid,.badge.warn{background:var(--pending-soft)!important;color:var(--pending-color)!important}
+.status.cancelled,.badge.cancelled,.badge.bad{background:var(--danger-soft)!important;color:var(--danger-color)!important}
 .card{transition:border-color .18s,box-shadow .18s}
+@media(max-width:520px){
+ .screen .card{border-left-width:4px}
+ .navBtn.active{box-shadow:inset 0 -2px 0 var(--nav-color,#b7545c)}
+}
 </style>
 </head>
 <body>
@@ -208,7 +229,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.app{width:min(1
 <div id="paymentModal" class="modal"><div class="modalBox"><div class="modalHead"><h3>Atualizar recebimento</h3><button class="close" data-close="paymentModal">×</button></div><input id="paymentPackageId" type="hidden"><div class="field"><label>Total recebido até agora</label><input id="paymentAmount" class="input" type="number"></div><button id="savePayment" class="btn primary full">Salvar recebimento</button></div></div>
 
 <div id="toast" class="toast"></div>
-<script src="app.js?v=cores-3"></script>
+<script src="app.js?v=cores-4"></script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
 </body>
 </html>
