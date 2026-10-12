@@ -10,9 +10,25 @@ var KEYS={
  profilePhoto:'loyara_profile_photo_v1'
 };
 var DEFAULT_PROCEDURES=[
- 'Limpeza de pele','Drenagem linfática','Massagem modeladora','Massagem relaxante',
- 'Hidratação facial','Revitalização facial','Peeling de diamante','Detox corporal',
- 'Spa dos pés','Design de sobrancelhas','Depilação facial','Depilação corporal'
+ 'Limpeza de pele',
+ 'Revitalização facial',
+ 'Hidratação facial',
+ 'Peeling de diamante',
+ 'Tratamento antiacne',
+ 'Dermaplaning',
+ 'Drenagem linfática',
+ 'Massagem relaxante',
+ 'Massagem com pedras quentes',
+ 'Massagem modeladora',
+ 'Dreno Detox',
+ 'Ventosaterapia',
+ 'Glúteo Bumbum Up',
+ 'Endermoterapia pós-operatório',
+ 'Detox corporal',
+ 'Spa dos pés',
+ 'Design de sobrancelhas',
+ 'Depilação facial',
+ 'Depilação corporal'
 ];
 
 function uid(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2)}
@@ -59,6 +75,14 @@ clients=clients.map(function(c){return Object.assign({favorite:false,notes:'',ph
 procedures=procedures.map(function(p){
  var price=Number(p.price||0);
  return {id:p.id||uid(),name:p.name||'Procedimento',price:price,minPrice:Number((price*0.80).toFixed(2)),duration:60,notes:''};
+});
+/* Inclui novos procedimentos também para quem já utiliza o sistema,
+   preservando preços e configurações dos procedimentos existentes. */
+var existingProcedureNames=procedures.map(function(p){return String(p.name||'').trim().toLocaleLowerCase('pt-BR')});
+DEFAULT_PROCEDURES.forEach(function(name,i){
+ if(existingProcedureNames.indexOf(name.trim().toLocaleLowerCase('pt-BR'))===-1){
+  procedures.push({id:'default-added-'+i+'-'+uid(),name:name,price:0,minPrice:0,duration:60,notes:''});
+ }
 });
 packages=packages.map(function(p){
  var items=(p.items||[]).map(function(i){
